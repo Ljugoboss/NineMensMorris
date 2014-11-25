@@ -1,7 +1,6 @@
 package com.ninemensmorris;
 
-import java.util.HashMap;
-
+import Utils.Rules;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +9,8 @@ import android.util.Log;
 
 public class MainActivity extends Activity {
 	private final String TAG = "Main activity";
-	private HashMap<String, Double> rates; //Used to store the rates with currency as a key for easy access.
+	
+	Rules rules = new Rules();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
