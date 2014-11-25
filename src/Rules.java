@@ -13,26 +13,56 @@
 
 public class Rules {
 	private int[] playingfield;
+	private int turn;
+	//Markers not on the playing field
 	private int blackMarkers;
 	private int whiteMarkers;
 	
 	private final int EMPTY_FIELD = 0;
-	private final int BLACK_CHECKER = 1;
-	private final int WHITE_CHECKER = 2;
-	
-	private boolean whitesTurn = true; //true if white's turn, false if black's turn
 	
 	public Rules() {
 		playingfield = new int[25];
 		blackMarkers = 9;
 		whiteMarkers = 9;
+		turn = Constants.WHITE; //Random who will begin?
 	}
-
-	/**
-	 * Check whether this is a legal move.
-	 */
-	private boolean isValidMove(int to, int from) {
+	
+	public boolean validMove(int from, int to) {
+			
+		if(turn == Constants.BLACK && blackMarkers > 0) {
+			playingfield[to] = Constants.BLACK;
+			blackMarkers--;
+			turn = Constants.WHITE;
+			return true;
+		}
+		if(turn == Constants.WHITE && whiteMarkers > 0) {
+			playingfield[to] = Constants.WHITE;
+			whiteMarkers--;
+			turn = Constants.BLACK;
+			return true;
+		}
 		
+		if(playingfield[from] != turn) {
+			return false;
+		}
+		
+		if(!isValidMove(from, to)) {
+			return false;
+		}
+		
+		playingfield[to] = playingfield[from];
+		playingfield[from] = EMPTY_FIELD;
+		
+		if(turn == Constants.WHITE) {
+			turn = Constants.BLACK;
+		} else {
+			turn = Constants.WHITE;
+		}
+		
+		return true;
+	}
+	
+	private boolean isValidMove(int from, int to) {
 		if(playingfield[to] != EMPTY_FIELD)  {
 			return false;
 		}
@@ -88,5 +118,91 @@ public class Rules {
 			return (from == 15 || from == 23);
 		}
 		return false;
+	}
+	
+	public boolean canRemove(int partOfLine) {
+		if(playingfield[partOfLine] == EMPTY_FIELD) {
+			return false;
+		}
+		
+		if((partOfLine == 1 || partOfLine == 2 || partOfLine == 3) && (playingfield[1] == playingfield[2] && playingfield[2] == playingfield[3])) {
+			return true;
+		}
+		if((partOfLine == 4 || partOfLine == 5 || partOfLine == 6) && (playingfield[4] == playingfield[5] && playingfield[5] == playingfield[6])) {
+			return true;
+		}
+		if((partOfLine == 7 || partOfLine == 8 || partOfLine == 9) && (playingfield[7] == playingfield[8] && playingfield[8] == playingfield[9])) {
+			return true;
+		}
+		if((partOfLine == 10 || partOfLine == 11 || partOfLine == 12) && (playingfield[10] == playingfield[11] && playingfield[11] == playingfield[12])) {
+			return true;
+		}
+		if((partOfLine == 13 || partOfLine == 14 || partOfLine == 15) && (playingfield[13] == playingfield[14] && playingfield[14] == playingfield[15])) {
+			return true;
+		}
+		if((partOfLine == 16 || partOfLine == 17 || partOfLine == 18) && (playingfield[16] == playingfield[17] && playingfield[17] == playingfield[18])) {
+			return true;
+		}
+		if((partOfLine == 19 || partOfLine == 20 || partOfLine == 21) && (playingfield[19] == playingfield[20] && playingfield[20] == playingfield[21])) {
+			return true;
+		}
+		if((partOfLine == 22 || partOfLine == 23 || partOfLine == 24) && (playingfield[22] == playingfield[23] && playingfield[23] == playingfield[24])) {
+			return true;
+		}
+		if((partOfLine == 1 || partOfLine == 10 || partOfLine == 22) && (playingfield[1] == playingfield[10] && playingfield[10] == playingfield[22])) {
+			return true;
+		}
+		if((partOfLine == 4 || partOfLine == 11 || partOfLine == 19) && (playingfield[4] == playingfield[11] && playingfield[11] == playingfield[19])) {
+			return true;
+		}
+		if((partOfLine == 7 || partOfLine == 12 || partOfLine == 16) && (playingfield[7] == playingfield[12] && playingfield[12] == playingfield[16])) {
+			return true;
+		}
+		if((partOfLine == 2 || partOfLine == 5 || partOfLine == 8) && (playingfield[2] == playingfield[5] && playingfield[5] == playingfield[8])) {
+			return true;
+		}
+		if((partOfLine == 17 || partOfLine == 20 || partOfLine == 23) && (playingfield[17] == playingfield[20] && playingfield[20] == playingfield[23])) {
+			return true;
+		}
+		if((partOfLine == 9 || partOfLine == 13 || partOfLine == 18) && (playingfield[9] == playingfield[13] && playingfield[13] == playingfield[18])) {
+			return true;
+		}
+		if((partOfLine == 6 || partOfLine == 14 || partOfLine == 21) && (playingfield[6] == playingfield[14] && playingfield[14] == playingfield[21])) {
+			return true;
+		}
+		if((partOfLine == 3 || partOfLine == 15 || partOfLine == 24) && (playingfield[3] == playingfield[15] && playingfield[15] == playingfield[24])) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean remove(int from, int color) {
+		if (playingfield[from] == color) {
+			playingfield[from] = EMPTY_FIELD;
+			return true;
+		} else
+			return false;
+	}
+	
+	/**
+	 * Check if color 'color' has won
+	 * @param color 
+	 * @return
+	 */
+	public boolean isItAWin(int color) {
+		if(whiteMarkers > 0 || blackMarkers > 0) {
+			return false;
+		}
+		int count = 0;
+		for(int i : playingfield) {
+			if(i == color) {
+				count++;
+			}
+		}
+		return (count < 3);
+	}
+	
+	public int fieldColor(int field) {
+		return playingfield[field];
 	}
 }
