@@ -1,4 +1,5 @@
 package Utils;
+
 /*
  * The game board positions
  *
