@@ -1077,10 +1077,11 @@ containing a value of this type.
         public static final int abc_textfield_searchview_holo_light=0x7f020054;
         public static final int abc_textfield_searchview_right_holo_dark=0x7f020055;
         public static final int abc_textfield_searchview_right_holo_light=0x7f020056;
-        public static final int background=0x7f020057;
+        public static final int black_checker=0x7f020057;
         public static final int ic_launcher=0x7f020058;
         public static final int ninemenmorrisbg=0x7f020059;
         public static final int ninemenmorrisboard=0x7f02005a;
+        public static final int white_checker=0x7f02005b;
     }
     public static final class id {
         public static final int TurnText=0x7f05003d;
@@ -1095,10 +1096,36 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_settings=0x7f05003e;
+        public static final int action_settings=0x7f050058;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int always=0x7f05000b;
+        public static final int area1=0x7f050040;
+        public static final int area10=0x7f050043;
+        public static final int area11=0x7f050049;
+        public static final int area12=0x7f050051;
+        public static final int area13=0x7f050052;
+        public static final int area14=0x7f05004a;
+        public static final int area15=0x7f050044;
+        public static final int area16=0x7f050056;
+        public static final int area17=0x7f050053;
+        public static final int area18=0x7f050057;
+        public static final int area19=0x7f05004e;
+        public static final int area2=0x7f050041;
+        public static final int area20=0x7f05004b;
+        public static final int area21=0x7f05004f;
+        public static final int area22=0x7f050045;
+        public static final int area23=0x7f050046;
+        public static final int area24=0x7f050047;
+        public static final int area3=0x7f050042;
+        public static final int area4=0x7f05004c;
+        public static final int area5=0x7f050048;
+        public static final int area6=0x7f05004d;
+        public static final int area7=0x7f050054;
+        public static final int area8=0x7f050050;
+        public static final int area9=0x7f050055;
         public static final int beginning=0x7f050011;
+        public static final int board=0x7f05003e;
+        public static final int board_background=0x7f05003f;
         public static final int checkbox=0x7f05002d;
         public static final int collapseActionView=0x7f05000d;
         public static final int container=0x7f05003c;
@@ -1276,6 +1303,9 @@ containing a value of this type.
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f0b008c;
+        public static final int CheckerArea=0x7f0b008d;
+        public static final int CheckerImage=0x7f0b008e;
+        public static final int Hitbox=0x7f0b008f;
         /**  Mimic text appearance in select_dialog_item.xml 
          */
         public static final int TextAppearance_AppCompat_Base_CompactMenu_Dialog=0x7f0b0063;

@@ -25,6 +25,10 @@ public class MainActivity extends Activity {
 		
 		int action = event.getAction();
 		switch (action) {
+		case MotionEvent.ACTION_DOWN:
+			Log.i(TAG, "Action down");
+			//TODO Check position and do stuff
+			break;
 		case MotionEvent.ACTION_UP:
 			Log.i(TAG, "Action up");
 			//TODO Check position and do stuff
