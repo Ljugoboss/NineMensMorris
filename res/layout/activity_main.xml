@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/ninemenmorrisbg"
     tools:context="com.ninemensmorris.MainActivity"
-    tools:ignore="MergeRootFrame" >
+    tools:ignore="MergeRootFrame"
+    android:clipChildren="false" >
 
     <TextView
         android:id="@+id/TurnText"
@@ -208,38 +209,47 @@
         android:layout_above="@id/board" >
 
         <ImageView
+            android:id="@+id/whiteChecker1"
             style="@style/CheckerImage"
             android:src="@drawable/white_checker" />
 
         <ImageView
+            android:id="@+id/whiteChecker2"
             style="@style/CheckerImage"
             android:src="@drawable/white_checker" />
 
         <ImageView
+            android:id="@+id/whiteChecker3"
             style="@style/CheckerImage"
             android:src="@drawable/white_checker" />
 
         <ImageView
+            android:id="@+id/whiteChecker4"
             style="@style/CheckerImage"
             android:src="@drawable/white_checker" />
 
         <ImageView
+            android:id="@+id/whiteChecker5"
             style="@style/CheckerImage"
             android:src="@drawable/white_checker" />
 
         <ImageView
+            android:id="@+id/whiteChecker6"
             style="@style/CheckerImage"
             android:src="@drawable/white_checker" />
 
         <ImageView
+            android:id="@+id/whiteChecker7"
             style="@style/CheckerImage"
             android:src="@drawable/white_checker" />
 
         <ImageView
+            android:id="@+id/whiteChecker8"
             style="@style/CheckerImage"
             android:src="@drawable/white_checker" />
 
         <ImageView
+            android:id="@+id/whiteChecker9"
             style="@style/CheckerImage"
             android:src="@drawable/white_checker" />
     </LinearLayout>
@@ -249,38 +259,47 @@
         android:layout_below="@id/board" >
 
         <ImageView
+            android:id="@+id/blackChecker1"
             style="@style/CheckerImage"
             android:src="@drawable/black_checker" />
 
         <ImageView
+            android:id="@+id/blackChecker2"
             style="@style/CheckerImage"
             android:src="@drawable/black_checker" />
 
         <ImageView
+            android:id="@+id/blackChecker3"
             style="@style/CheckerImage"
             android:src="@drawable/black_checker" />
 
         <ImageView
+            android:id="@+id/blackChecker4"
             style="@style/CheckerImage"
             android:src="@drawable/black_checker" />
 
         <ImageView
+            android:id="@+id/blackChecker5"
             style="@style/CheckerImage"
             android:src="@drawable/black_checker" />
 
         <ImageView
+            android:id="@+id/blackChecker6"
             style="@style/CheckerImage"
             android:src="@drawable/black_checker" />
 
         <ImageView
+            android:id="@+id/blackChecker7"
             style="@style/CheckerImage"
             android:src="@drawable/black_checker" />
 
         <ImageView
+            android:id="@+id/blackChecker8"
             style="@style/CheckerImage"
             android:src="@drawable/black_checker" />
 
         <ImageView
+            android:id="@+id/blackChecker9"
             style="@style/CheckerImage"
             android:src="@drawable/black_checker" />
     </LinearLayout>
