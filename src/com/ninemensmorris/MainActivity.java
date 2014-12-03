@@ -55,15 +55,15 @@ public class MainActivity extends Activity {
 		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker9));
 
 		arrayListBlackCheckers = new ArrayList<ImageView>();
-		arrayListBlackCheckers.add((ImageView) findViewById(R.id.whiteChecker1));
-		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker2));
-		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker3));
-		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker4));
-		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker5));
-		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker6));
-		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker7));
-		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker8));
-		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker9));
+		arrayListBlackCheckers.add((ImageView) findViewById(R.id.blackChecker1));
+		arrayListBlackCheckers.add((ImageView) findViewById(R.id.blackChecker2));
+		arrayListBlackCheckers.add((ImageView) findViewById(R.id.blackChecker3));
+		arrayListBlackCheckers.add((ImageView) findViewById(R.id.blackChecker4));
+		arrayListBlackCheckers.add((ImageView) findViewById(R.id.blackChecker5));
+		arrayListBlackCheckers.add((ImageView) findViewById(R.id.blackChecker6));
+		arrayListBlackCheckers.add((ImageView) findViewById(R.id.blackChecker7));
+		arrayListBlackCheckers.add((ImageView) findViewById(R.id.blackChecker8));
+		arrayListBlackCheckers.add((ImageView) findViewById(R.id.blackChecker9));
 
 		arrayListAreas = new ArrayList<ImageView>();
 		arrayListAreas.add((ImageView) findViewById(R.id.area1));
@@ -259,7 +259,7 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				// TODO Ändra till rätt koordinater
+				// TODO ï¿½ndra till rï¿½tt koordinater
 				//				int width = imageViewSelectedChecker.getWidth();
 				//				int height = imageViewSelectedChecker.getHeight();
 				//
