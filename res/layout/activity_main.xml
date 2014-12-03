@@ -16,7 +16,8 @@
         android:layout_alignParentTop="true"
         android:gravity="center"
         android:text="@string/turn_color"
-        android:textSize="26sp" />
+        android:textSize="26sp"
+        android:textColor="@android:color/white" />
 
     <RelativeLayout
         android:id="@+id/board"

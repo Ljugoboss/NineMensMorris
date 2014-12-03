@@ -6,10 +6,8 @@ import java.util.HashMap;
 import Utils.Constants;
 import Utils.Rules;
 import android.app.Activity;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -17,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 
@@ -25,6 +24,7 @@ public class MainActivity extends Activity {
 
 	Rules rules = new Rules();
 
+	private TextView playerTurn;
 	private ArrayList<ImageView> arrayListWhiteCheckers;
 	private ArrayList<ImageView> arrayListBlackCheckers;
 	private ArrayList<ImageView> arrayListAreas;
@@ -45,6 +45,7 @@ public class MainActivity extends Activity {
 		imageViewAreaToMoveTo = null;
 		imageViewAreaToMoveFrom = null;
 		checkerPositions = new HashMap<ImageView, Integer>();
+		playerTurn = (TextView) findViewById(R.id.TurnText);
 
 		arrayListWhiteCheckers = new ArrayList<ImageView>();
 		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker1));
@@ -149,13 +150,19 @@ public class MainActivity extends Activity {
 						int to = Integer.parseInt((String) imageViewAreaToMoveTo.getContentDescription());
 						if (rules.validMove(checkerPositions.get(imageViewSelectedChecker), to)) {
 							moveChecker();
-							
+
 							// Remember new position
 							checkerPositions.put((ImageView) imageViewSelectedChecker, Integer.parseInt((String) imageViewAreaToMoveTo.getContentDescription()));
-						}	
+						}
+						
 						imageViewSelectedChecker.setAlpha(1.0f);
 						hasSelectedChecker = false;
 						imageViewSelectedChecker = null;
+						if (rules.getTurn() == Constants.WHITE) {
+							playerTurn.setText("White turn");
+						} else {
+							playerTurn.setText("Black turn");
+						}
 					}
 				}
 			});
