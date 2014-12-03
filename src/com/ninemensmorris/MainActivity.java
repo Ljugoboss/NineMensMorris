@@ -146,8 +146,10 @@ public class MainActivity extends Activity {
 						if (imageViewAreaToMoveFrom != null) {
 							imageViewSelectedChecker.setAlpha(1.0f);
 						}
-						if (rules.validMove(checkerPositions.get(imageViewSelectedChecker), Integer.parseInt((String) imageViewAreaToMoveTo.getContentDescription()))) {
+						int to = Integer.parseInt((String) imageViewAreaToMoveTo.getContentDescription());
+						if (rules.validMove(checkerPositions.get(imageViewSelectedChecker), to)) {
 							moveChecker();
+							
 							// Remember new position
 							checkerPositions.put((ImageView) imageViewSelectedChecker, Integer.parseInt((String) imageViewAreaToMoveTo.getContentDescription()));
 						}	
@@ -158,99 +160,6 @@ public class MainActivity extends Activity {
 				}
 			});
 		}
-	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-
-		int action = event.getAction();
-		switch (action) {
-		case MotionEvent.ACTION_DOWN:
-			Log.i(TAG, "Action down");
-			//TODO Check position and do stuff
-			break;
-		case MotionEvent.ACTION_UP:
-			Log.i(TAG, "Action up");
-			//TODO Check position and do stuff
-
-			if (!hasSelectedChecker) {
-				if (checkerAtPosition(event.getX(), event.getY())) {
-					hasSelectedChecker = true;
-					//					AlphaAnimation alphaAnimation = new AlphaAnimation(1, (float) 0.5);
-					//					alphaAnimation.setFillAfter(true);
-					//					imageViewSelectedChecker.startAnimation(alphaAnimation);
-				}
-			} else {
-				if (areaAtPosition(event.getX(), event.getY())) {
-					hasSelectedChecker = false;
-					//					int from, to;
-					//					if (imageViewAreaToMoveFrom != null) {
-					//						from = Integer.parseInt((String) imageViewAreaToMoveFrom.getContentDescription());
-					//					} else {
-					//						from = 0;
-					//					}
-					//					rules.validMove(from, Integer.parseInt((String) imageViewAreaToMoveTo.getContentDescription()));
-					//					moveChecker();
-				}
-			}
-			break;
-		}
-
-		return super.onTouchEvent(event);
-	}
-
-	private boolean checkerAtPosition(float x, float y) {
-
-		// TODO Check for every checker in the game
-		if (rules.getTurn() == Constants.WHITE) {
-			for (ImageView v : arrayListWhiteCheckers) {
-				if (getBorders(v).contains((int) x, (int) y)) {
-					Log.i(TAG, "Clicked checker");
-					imageViewSelectedChecker = v;
-					return true;
-				}
-			}
-		} else {
-			for (ImageView v : arrayListBlackCheckers) {
-				if (getBorders(v).contains((int) x, (int) y)) {
-					Log.i(TAG, "Clicked checker");
-					imageViewSelectedChecker = v;
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	private boolean areaAtPosition(float x, float y) {
-
-		// TODO Check for every checker in the game
-		for (ImageView v : arrayListAreas) {
-			if (getBorders(v).contains((int) x, (int) y)) {
-				Log.i(TAG, "Clicked area");
-				imageViewAreaToMoveTo = v;
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private Rect getBorders(ImageView v) {
-		if (v != null) {
-			int[] location = {0, 0};
-			v.getLocationOnScreen(location);
-
-			int width = v.getWidth();
-			int height = v.getHeight();
-
-			int left = location[0] - width/2;
-			int right = location[0] + width/2;
-			int top = location[1] - height/2;
-			int bottom = location[1] + height/2;
-
-			return new Rect(left, top, right, bottom);		
-		}
-		return new Rect();
 	}
 
 	private void moveChecker() {
