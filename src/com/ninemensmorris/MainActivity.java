@@ -172,7 +172,6 @@ public class MainActivity extends Activity {
 	}
 
 
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
@@ -198,25 +197,14 @@ public class MainActivity extends Activity {
 		final int[] locationArea = {0, 0};
 		tmpImageViewSelectedChecker.getLocationOnScreen(locationChecker);
 		tmpImageViewAreaToMoveTo.getLocationOnScreen(locationArea);
-
+		
 		TranslateAnimation tAnimation = new TranslateAnimation(0, locationArea[0] - locationChecker[0], 0, locationArea[1] - locationChecker[1]);
-		tAnimation.setFillEnabled(false);
-		tAnimation.setFillAfter(false);
+		tAnimation.setFillEnabled(true);
 		tAnimation.setDuration(2000);
 		tAnimation.setAnimationListener(new AnimationListener() {
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
-
-				// Remove the checker from the side of the board onto the board and add a new view to hold its place.
-				if (tmpImageViewSelectedChecker.getParent() != findViewById(R.id.board)) {
-					ViewGroup parent = ((ViewGroup)tmpImageViewSelectedChecker.getParent());
-					int index = parent.indexOfChild(tmpImageViewSelectedChecker);
-					parent.removeView(tmpImageViewSelectedChecker);
-					parent.addView(getLayoutInflater().inflate(R.layout.layout_placeholder, parent, false), index);
-					((ViewGroup) findViewById(R.id.board)).addView(tmpImageViewSelectedChecker);
-				}
-
 				tmpImageViewSelectedChecker.setLayoutParams(tmpImageViewAreaToMoveTo.getLayoutParams());
 
 				tmpImageViewSelectedChecker.setDrawingCacheEnabled(true);
@@ -232,6 +220,15 @@ public class MainActivity extends Activity {
 				tmpImageViewSelectedChecker.setDrawingCacheEnabled(false);
 			}
 		});
+		//Move to the other layout
+		if (imageViewSelectedChecker.getParent() != findViewById(R.id.board)) {
+			ViewGroup parent = ((ViewGroup)imageViewSelectedChecker.getParent());
+			int index = parent.indexOfChild(imageViewSelectedChecker);
+			parent.removeView(imageViewSelectedChecker);
+			parent.addView(getLayoutInflater().inflate(R.layout.layout_placeholder, parent, false), index);
+			((ViewGroup) findViewById(R.id.board)).addView(imageViewSelectedChecker);
+		}
+		
 		imageViewSelectedChecker.startAnimation(tAnimation);
 	}
 
