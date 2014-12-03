@@ -1081,7 +1081,8 @@ containing a value of this type.
         public static final int ic_launcher=0x7f020058;
         public static final int ninemenmorrisbg=0x7f020059;
         public static final int ninemenmorrisboard=0x7f02005a;
-        public static final int white_checker=0x7f02005b;
+        public static final int valid_move=0x7f02005b;
+        public static final int white_checker=0x7f02005c;
     }
     public static final class id {
         public static final int TurnText=0x7f05003d;
@@ -1096,27 +1097,27 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_settings=0x7f050058;
+        public static final int action_settings=0x7f05006a;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int always=0x7f05000b;
-        public static final int area1=0x7f050040;
-        public static final int area10=0x7f050043;
+        public static final int area1=0x7f050044;
+        public static final int area10=0x7f050041;
         public static final int area11=0x7f050049;
         public static final int area12=0x7f050051;
         public static final int area13=0x7f050052;
         public static final int area14=0x7f05004a;
-        public static final int area15=0x7f050044;
+        public static final int area15=0x7f050042;
         public static final int area16=0x7f050056;
         public static final int area17=0x7f050053;
         public static final int area18=0x7f050057;
         public static final int area19=0x7f05004e;
-        public static final int area2=0x7f050041;
+        public static final int area2=0x7f050040;
         public static final int area20=0x7f05004b;
         public static final int area21=0x7f05004f;
-        public static final int area22=0x7f050045;
-        public static final int area23=0x7f050046;
+        public static final int area22=0x7f050046;
+        public static final int area23=0x7f050043;
         public static final int area24=0x7f050047;
-        public static final int area3=0x7f050042;
+        public static final int area3=0x7f050045;
         public static final int area4=0x7f05004c;
         public static final int area5=0x7f050048;
         public static final int area6=0x7f05004d;
@@ -1124,6 +1125,15 @@ containing a value of this type.
         public static final int area8=0x7f050050;
         public static final int area9=0x7f050055;
         public static final int beginning=0x7f050011;
+        public static final int blackChecker1=0x7f050061;
+        public static final int blackChecker2=0x7f050062;
+        public static final int blackChecker3=0x7f050063;
+        public static final int blackChecker4=0x7f050064;
+        public static final int blackChecker5=0x7f050065;
+        public static final int blackChecker6=0x7f050066;
+        public static final int blackChecker7=0x7f050067;
+        public static final int blackChecker8=0x7f050068;
+        public static final int blackChecker9=0x7f050069;
         public static final int board=0x7f05003e;
         public static final int board_background=0x7f05003f;
         public static final int checkbox=0x7f05002d;
@@ -1172,6 +1182,15 @@ containing a value of this type.
         public static final int top_action_bar=0x7f050020;
         public static final int up=0x7f050021;
         public static final int useLogo=0x7f050003;
+        public static final int whiteChecker1=0x7f050058;
+        public static final int whiteChecker2=0x7f050059;
+        public static final int whiteChecker3=0x7f05005a;
+        public static final int whiteChecker4=0x7f05005b;
+        public static final int whiteChecker5=0x7f05005c;
+        public static final int whiteChecker6=0x7f05005d;
+        public static final int whiteChecker7=0x7f05005e;
+        public static final int whiteChecker8=0x7f05005f;
+        public static final int whiteChecker9=0x7f050060;
         public static final int withText=0x7f05000c;
     }
     public static final class integer {
