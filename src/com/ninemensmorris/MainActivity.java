@@ -6,9 +6,10 @@ import java.util.HashMap;
 import Utils.Constants;
 import Utils.Rules;
 import android.app.Activity;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 
@@ -113,7 +115,7 @@ public class MainActivity extends Activity {
 							parent.removeView(v);
 							playerTurn.setText("White turn");
 							if (rules.isItAWin(Constants.WHITE)) {
-								playerTurn.setText("White wins!");
+								playerTurn.setText("Black wins!");
 							}
 						} else if (!(checkerPositions.get(v) != 0 && checkerPositions.containsValue(0)) || (checkerPositions.get(v) == 0)) {
 							if (imageViewSelectedChecker != null) {
@@ -143,7 +145,7 @@ public class MainActivity extends Activity {
 							parent.removeView(v);
 							playerTurn.setText("Black turn");
 							if (rules.isItAWin(Constants.BLACK)) {
-								playerTurn.setText("Black wins!");
+								playerTurn.setText("White wins!");
 							}
 						} else if (!(checkerPositions.get(v) != 0 && checkerPositions.containsValue(0)) || (checkerPositions.get(v) == 0)) {
 							if (imageViewSelectedChecker != null) {
@@ -204,6 +206,24 @@ public class MainActivity extends Activity {
 			});
 		}
 	}
+	
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
+	
+	@Override
+     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.item1:
+        	finish();
+        	startActivity(getIntent());
+          return true;           
+        default:
+          return super.onOptionsItemSelected(item);
+        } 
+    } 
 
 	private void moveChecker() {
 		final ImageView tmpImageViewSelectedChecker = imageViewSelectedChecker;
