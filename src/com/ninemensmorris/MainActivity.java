@@ -226,10 +226,12 @@ public class MainActivity extends Activity {
 		//Move to the other layout
 		if (imageViewSelectedChecker.getParent() != findViewById(R.id.board)) {
 			ViewGroup parent = ((ViewGroup)imageViewSelectedChecker.getParent());
+			FrameLayout placeholder = (FrameLayout) getLayoutInflater().inflate(R.layout.layout_placeholder, parent, false);
 			int index = parent.indexOfChild(imageViewSelectedChecker);
 			parent.removeView(imageViewSelectedChecker);
-			parent.addView(getLayoutInflater().inflate(R.layout.layout_placeholder, parent, false), index);
+			parent.addView(placeholder, index);
 			((ViewGroup) findViewById(R.id.board)).addView(imageViewSelectedChecker);
+
 		}
 		
 		imageViewSelectedChecker.startAnimation(tAnimation);
