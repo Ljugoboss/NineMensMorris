@@ -207,4 +207,8 @@ public class Rules {
 	public int fieldColor(int field) {
 		return playingfield[field];
 	}
+	
+	public int getTurn() {
+		return turn;
+	}
 }
