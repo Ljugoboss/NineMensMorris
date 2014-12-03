@@ -38,37 +38,19 @@
         <!-- Outer circle -->
 
         <ImageView
-            android:id="@+id/area1"
-            style="@style/Hitbox"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="25dp"
-            android:contentDescription="1" />
-
-        <ImageView
             android:id="@+id/area2"
             style="@style/Hitbox"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="23dp"
             android:contentDescription="2" />
-
-        <ImageView
-            android:id="@+id/area3"
-            style="@style/Hitbox"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="25dp"
-            android:contentDescription="3" />
 
         <ImageView
             android:id="@+id/area10"
             style="@style/Hitbox"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="23dp"
             android:contentDescription="10" />
 
         <ImageView
@@ -76,33 +58,43 @@
             style="@style/Hitbox"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="25dp"
+            android:layout_marginRight="23dp"
             android:contentDescription="15" />
-
-        <ImageView
-            android:id="@+id/area22"
-            style="@style/Hitbox"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginBottom="25dp"
-            android:layout_marginLeft="25dp"
-            android:contentDescription="22" />
 
         <ImageView
             android:id="@+id/area23"
             style="@style/Hitbox"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="25dp"
+            android:layout_marginBottom="23dp"
             android:contentDescription="23" />
+
+        <ImageView
+            android:id="@+id/area1"
+            style="@style/Hitbox"
+            android:layout_alignLeft="@id/area10"
+            android:layout_alignTop="@id/area2"
+            android:contentDescription="1" />
+
+        <ImageView
+            android:id="@+id/area3"
+            style="@style/Hitbox"
+            android:layout_alignRight="@id/area15"
+            android:layout_alignTop="@id/area2"
+            android:contentDescription="3" />
+
+        <ImageView
+            android:id="@+id/area22"
+            style="@style/Hitbox"
+            android:layout_alignLeft="@id/area10"
+            android:layout_alignBottom="@id/area23"
+            android:contentDescription="22" />
 
         <ImageView
             android:id="@+id/area24"
             style="@style/Hitbox"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="25dp"
-            android:layout_marginRight="25dp"
+            android:layout_alignRight="@id/area15"
+            android:layout_alignBottom="@id/area23"
             android:contentDescription="24" />
 
         <!-- middle circle -->
@@ -112,14 +104,12 @@
             style="@style/Hitbox"
             android:layout_below="@id/area2"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="4dp"
             android:contentDescription="5" />
 
         <ImageView
             android:id="@+id/area11"
             style="@style/Hitbox"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="4dp"
             android:layout_toRightOf="@id/area10"
             android:contentDescription="11" />
 
@@ -127,7 +117,6 @@
             android:id="@+id/area14"
             style="@style/Hitbox"
             android:layout_centerVertical="true"
-            android:layout_marginRight="4dp"
             android:layout_toLeftOf="@id/area15"
             android:contentDescription="14" />
 
@@ -136,7 +125,6 @@
             style="@style/Hitbox"
             android:layout_above="@id/area23"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="4dp"
             android:contentDescription="20" />
 
         <ImageView
@@ -174,14 +162,12 @@
             style="@style/Hitbox"
             android:layout_below="@id/area5"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="4dp"
             android:contentDescription="8" />
 
         <ImageView
             android:id="@+id/area12"
             style="@style/Hitbox"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="4dp"
             android:layout_toRightOf="@id/area11"
             android:contentDescription="12" />
 
@@ -189,7 +175,6 @@
             android:id="@+id/area13"
             style="@style/Hitbox"
             android:layout_centerVertical="true"
-            android:layout_marginRight="4dp"
             android:layout_toLeftOf="@id/area14"
             android:contentDescription="13" />
 
@@ -198,7 +183,6 @@
             style="@style/Hitbox"
             android:layout_above="@id/area20"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="4dp"
             android:contentDescription="17" />
 
         <ImageView

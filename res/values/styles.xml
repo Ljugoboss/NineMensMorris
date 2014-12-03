@@ -32,8 +32,8 @@
     </style>
     
     <style name="Hitbox">
-        <item name="android:layout_width">25dp</item>
-        <item name="android:layout_height">25dp</item>
+        <item name="android:layout_width">29dp</item>
+        <item name="android:layout_height">29dp</item>
         <item name="android:adjustViewBounds">true</item>
     </style>
 
