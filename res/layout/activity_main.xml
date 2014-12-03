@@ -43,7 +43,6 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="23dp"
-            android:clickable="true"
             android:contentDescription="2" />
 
         <ImageView
@@ -52,7 +51,6 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="23dp"
-            android:clickable="true"
             android:contentDescription="10" />
 
         <ImageView
@@ -61,7 +59,6 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="23dp"
-            android:clickable="true"
             android:contentDescription="15" />
 
         <ImageView
@@ -70,7 +67,6 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="23dp"
-            android:clickable="true"
             android:contentDescription="23" />
 
         <ImageView
@@ -78,7 +74,6 @@
             style="@style/Hitbox"
             android:layout_alignLeft="@id/area10"
             android:layout_alignTop="@id/area2"
-            android:clickable="true"
             android:contentDescription="1" />
 
         <ImageView
@@ -86,7 +81,6 @@
             style="@style/Hitbox"
             android:layout_alignRight="@id/area15"
             android:layout_alignTop="@id/area2"
-            android:clickable="true"
             android:contentDescription="3" />
 
         <ImageView
@@ -94,7 +88,6 @@
             style="@style/Hitbox"
             android:layout_alignBottom="@id/area23"
             android:layout_alignLeft="@id/area10"
-            android:clickable="true"
             android:contentDescription="22" />
 
         <ImageView
@@ -102,7 +95,6 @@
             style="@style/Hitbox"
             android:layout_alignBottom="@id/area23"
             android:layout_alignRight="@id/area15"
-            android:clickable="true"
             android:contentDescription="24" />
 
         <!-- middle circle -->
@@ -112,7 +104,6 @@
             style="@style/Hitbox"
             android:layout_below="@id/area2"
             android:layout_centerHorizontal="true"
-            android:clickable="true"
             android:contentDescription="5" />
 
         <ImageView
@@ -120,7 +111,6 @@
             style="@style/Hitbox"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/area10"
-            android:clickable="true"
             android:contentDescription="11" />
 
         <ImageView
@@ -128,7 +118,6 @@
             style="@style/Hitbox"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/area15"
-            android:clickable="true"
             android:contentDescription="14" />
 
         <ImageView
@@ -136,7 +125,6 @@
             style="@style/Hitbox"
             android:layout_above="@id/area23"
             android:layout_centerHorizontal="true"
-            android:clickable="true"
             android:contentDescription="20" />
 
         <ImageView
@@ -144,7 +132,6 @@
             style="@style/Hitbox"
             android:layout_alignLeft="@id/area11"
             android:layout_alignTop="@id/area5"
-            android:clickable="true"
             android:contentDescription="4" />
 
         <ImageView
@@ -152,7 +139,6 @@
             style="@style/Hitbox"
             android:layout_alignRight="@id/area14"
             android:layout_alignTop="@id/area5"
-            android:clickable="true"
             android:contentDescription="6" />
 
         <ImageView
@@ -160,7 +146,6 @@
             style="@style/Hitbox"
             android:layout_alignBottom="@id/area20"
             android:layout_alignLeft="@id/area11"
-            android:clickable="true"
             android:contentDescription="19" />
 
         <ImageView
@@ -168,7 +153,6 @@
             style="@style/Hitbox"
             android:layout_alignBottom="@id/area20"
             android:layout_alignRight="@id/area14"
-            android:clickable="true"
             android:contentDescription="21" />
 
         <!-- middle circle -->
@@ -178,7 +162,6 @@
             style="@style/Hitbox"
             android:layout_below="@id/area5"
             android:layout_centerHorizontal="true"
-            android:clickable="true"
             android:contentDescription="8" />
 
         <ImageView
@@ -186,7 +169,6 @@
             style="@style/Hitbox"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/area11"
-            android:clickable="true"
             android:contentDescription="12" />
 
         <ImageView
@@ -194,7 +176,6 @@
             style="@style/Hitbox"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/area14"
-            android:clickable="true"
             android:contentDescription="13" />
 
         <ImageView
@@ -202,7 +183,6 @@
             style="@style/Hitbox"
             android:layout_above="@id/area20"
             android:layout_centerHorizontal="true"
-            android:clickable="true"
             android:contentDescription="17" />
 
         <ImageView
@@ -210,7 +190,6 @@
             style="@style/Hitbox"
             android:layout_alignLeft="@id/area12"
             android:layout_alignTop="@id/area8"
-            android:clickable="true"
             android:contentDescription="7" />
 
         <ImageView
@@ -218,7 +197,6 @@
             style="@style/Hitbox"
             android:layout_alignRight="@id/area13"
             android:layout_alignTop="@id/area8"
-            android:clickable="true"
             android:contentDescription="9" />
 
         <ImageView
@@ -226,7 +204,6 @@
             style="@style/Hitbox"
             android:layout_alignBottom="@id/area17"
             android:layout_alignLeft="@id/area12"
-            android:clickable="true"
             android:contentDescription="16" />
 
         <ImageView
@@ -234,7 +211,6 @@
             style="@style/Hitbox"
             android:layout_alignBottom="@id/area17"
             android:layout_alignRight="@id/area13"
-            android:clickable="true"
             android:contentDescription="18" />
     </RelativeLayout>
 
@@ -282,7 +258,6 @@
         <ImageView
             android:id="@+id/whiteChecker7"
             style="@style/CheckerImage"
-            android:clickable="true"
             android:contentDescription="7"
             android:src="@drawable/white_checker" />
 

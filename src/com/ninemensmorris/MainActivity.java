@@ -245,37 +245,28 @@ public class MainActivity extends Activity {
 	}
 
 	private void moveChecker() {
+		final ImageView tmpImageViewSelectedChecker = imageViewSelectedChecker;
+		final ImageView tmpImageViewAreaToMoveTo = imageViewAreaToMoveTo;
 		final int[] locationChecker = {0, 0};
 		final int[] locationArea = {0, 0};
-		imageViewSelectedChecker.getLocationOnScreen(locationChecker);
-		imageViewAreaToMoveTo.getLocationOnScreen(locationArea);
+		tmpImageViewSelectedChecker.getLocationOnScreen(locationChecker);
+		tmpImageViewAreaToMoveTo.getLocationOnScreen(locationArea);
+		
 		TranslateAnimation tAnimation = new TranslateAnimation(0, locationArea[0] - locationChecker[0], 0, locationArea[1] - locationChecker[1]);
 		tAnimation.setFillEnabled(false);
 		tAnimation.setFillAfter(false);
 		tAnimation.setDuration(2000);
-		final ImageView tmpImageViewSelectedChecker = imageViewSelectedChecker;
-		final ImageView tmpImageViewAreaToMoveTo = imageViewAreaToMoveTo;
 		tAnimation.setAnimationListener(new AnimationListener() {
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				// TODO �ndra till r�tt koordinater
-				//				int width = imageViewSelectedChecker.getWidth();
-				//				int height = imageViewSelectedChecker.getHeight();
-				//
-				//				int left = locationArea[0] - locationChecker[0];
-				//				int right = locationArea[0] - locationChecker[0] + imageViewSelectedChecker.getWidth();
-				//				int top = locationArea[1] - locationChecker[1];
-				//				int bottom = locationArea[1] - locationChecker[1] + imageViewSelectedChecker.getHeight();
-				//			
-				//				int left = imageViewAreaToMoveTo.getLeft();
-				//				int right = imageViewAreaToMoveTo.getRight();
-				//				int top = imageViewAreaToMoveTo.getTop();
-				//				int bottom = imageViewAreaToMoveTo.getBottom();
 
-				// Remove the checker from the side of the board onto the board
+				// Remove the checker from the side of the board onto the board and add a new view to hold its place.
 				if (tmpImageViewSelectedChecker.getParent() != findViewById(R.id.board)) {
-					((ViewGroup)tmpImageViewSelectedChecker.getParent()).removeView(tmpImageViewSelectedChecker);
+					ViewGroup parent = ((ViewGroup)tmpImageViewSelectedChecker.getParent());
+					int index = parent.indexOfChild(tmpImageViewSelectedChecker);
+					parent.removeView(tmpImageViewSelectedChecker);
+					parent.addView(getLayoutInflater().inflate(R.layout.layout_placeholder, parent, false), index);
 					((ViewGroup) findViewById(R.id.board)).addView(tmpImageViewSelectedChecker);
 				}
 

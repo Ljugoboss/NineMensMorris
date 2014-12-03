@@ -1244,7 +1244,8 @@ containing a value of this type.
         public static final int abc_search_view=0x7f030016;
         public static final int abc_simple_decor=0x7f030017;
         public static final int activity_main=0x7f030018;
-        public static final int support_simple_spinner_dropdown_item=0x7f030019;
+        public static final int layout_placeholder=0x7f030019;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001a;
     }
     public static final class menu {
         public static final int main=0x7f0c0000;
@@ -1323,8 +1324,9 @@ containing a value of this type.
          */
         public static final int AppTheme=0x7f0b008c;
         public static final int CheckerArea=0x7f0b008d;
-        public static final int CheckerImage=0x7f0b008e;
-        public static final int Hitbox=0x7f0b008f;
+        public static final int CheckerImage=0x7f0b008f;
+        public static final int CheckerImageArea=0x7f0b008e;
+        public static final int Hitbox=0x7f0b0090;
         /**  Mimic text appearance in select_dialog_item.xml 
          */
         public static final int TextAppearance_AppCompat_Base_CompactMenu_Dialog=0x7f0b0063;
