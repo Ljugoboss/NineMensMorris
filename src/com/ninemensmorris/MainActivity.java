@@ -9,8 +9,10 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -105,6 +107,7 @@ public class MainActivity extends Activity {
 				if (checkerAtPosition(event.getX(), event.getY())) {
 					hasSelectedChecker = true;
 					AlphaAnimation alphaAnimation = new AlphaAnimation(1, (float) 0.5);
+					alphaAnimation.setFillAfter(true);
 					imageViewCheckerToMove.startAnimation(alphaAnimation);
 				}
 			} else {
@@ -174,15 +177,51 @@ public class MainActivity extends Activity {
 	}
 	
 	private void moveChecker() {
-		int[] locationChecker = {0, 0};
-		int[] locationArea = {0, 0};
-		imageViewCheckerToMove.getLocationInWindow(locationChecker);
+		final int[] locationChecker = {0, 0};
+		final int[] locationArea = {0, 0};
+		imageViewCheckerToMove.getLocationOnScreen(locationChecker);
 		imageViewAreaToMoveTo.getLocationOnScreen(locationArea);
-		TranslateAnimation tAnimation = new TranslateAnimation(0, locationArea[0]- locationChecker[0], 0, locationArea[1] - locationChecker[1]);
-		tAnimation.setFillAfter(true);
-		tAnimation.setDuration(3000);
+		TranslateAnimation tAnimation = new TranslateAnimation(0, locationArea[0] - locationChecker[0], 0, locationArea[1] - locationChecker[1]);
+		tAnimation.setFillEnabled(false);
+		tAnimation.setFillAfter(false);
+		tAnimation.setDuration(2000);
+		tAnimation.setAnimationListener(new AnimationListener() {
 
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				// TODO Ändra till rätt koordinater
+//				int width = imageViewCheckerToMove.getWidth();
+//				int height = imageViewCheckerToMove.getHeight();
+//
+//				int left = locationArea[0] - locationChecker[0];
+//				int right = locationArea[0] - locationChecker[0] + imageViewCheckerToMove.getWidth();
+//				int top = locationArea[1] - locationChecker[1];
+//				int bottom = locationArea[1] - locationChecker[1] + imageViewCheckerToMove.getHeight();
+//			
+//				int left = imageViewAreaToMoveTo.getLeft();
+//				int right = imageViewAreaToMoveTo.getRight();
+//				int top = imageViewAreaToMoveTo.getTop();
+//				int bottom = imageViewAreaToMoveTo.getBottom();
+				
+				// Remove the checker from the side of the board onto the board
+				if (imageViewCheckerToMove.getParent() != findViewById(R.id.board)) {
+					((ViewGroup)imageViewCheckerToMove.getParent()).removeView(imageViewCheckerToMove);
+					((ViewGroup) findViewById(R.id.board)).addView(imageViewCheckerToMove);
+				}
+				
+				imageViewCheckerToMove.setLayoutParams(imageViewAreaToMoveTo.getLayoutParams());
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void onAnimationStart(Animation animation) {
+				// TODO Auto-generated method stub
+			}
+		});
 		imageViewCheckerToMove.startAnimation(tAnimation);
-		imageViewAreaToMoveTo.invalidate();
 	}
 }
