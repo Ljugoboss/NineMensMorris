@@ -52,6 +52,7 @@ public class MainActivity extends Activity {
 		checkerPositions = new HashMap<ImageView, Integer>();
 		playerTurn = (TextView) findViewById(R.id.TurnText);
 
+		// Initialize all views
 		arrayListWhiteCheckers = new ArrayList<ImageView>();
 		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker1));
 		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker2));
@@ -131,7 +132,6 @@ public class MainActivity extends Activity {
 
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					if (hasSelectedChecker) {
 						imageViewAreaToMoveTo = (FrameLayout) v;
 
@@ -181,6 +181,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		// Standard menu creating
 		switch (item.getItemId()) {
 		case R.id.item1:
 			finish();
@@ -192,6 +193,7 @@ public class MainActivity extends Activity {
 	} 
 
 	private void moveChecker() {
+		// Create two temporary final variables so that the onAnimationEnd method uses the right values
 		final ImageView tmpImageViewSelectedChecker = imageViewSelectedChecker;
 		final FrameLayout tmpImageViewAreaToMoveTo = imageViewAreaToMoveTo;
 		final int[] locationChecker = {0, 0};
@@ -199,10 +201,11 @@ public class MainActivity extends Activity {
 		tmpImageViewSelectedChecker.getLocationOnScreen(locationChecker);
 		tmpImageViewAreaToMoveTo.getLocationOnScreen(locationArea);
 
+		// Prepare animation with x and y movement
 		TranslateAnimation tAnimation = new TranslateAnimation(0, locationArea[0] - locationChecker[0], 0, locationArea[1] - locationChecker[1]);
 		tAnimation.setFillEnabled(false);
 		tAnimation.setFillAfter(false);
-		tAnimation.setDuration(2000);
+		tAnimation.setDuration(1500);
 		tAnimation.setAnimationListener(new AnimationListener() {
 
 			@Override
@@ -224,7 +227,6 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onAnimationRepeat(Animation animation) {
-				// TODO Auto-generated method stub
 			}
 
 			@Override
@@ -237,6 +239,7 @@ public class MainActivity extends Activity {
 
 	private void selectChecker(View v) {
 		if (removeNextChecker) {
+			// If the previous player got 3-in-a-row, remove a choosen checker from the other player			
 			if(rules.getTurn() == Constants.BLACK && rules.remove(checkerPositions.get(v), Constants.BLACK)) {
 				unMarkAllFields();
 				arrayListBlackCheckers.remove(v);
@@ -260,6 +263,7 @@ public class MainActivity extends Activity {
 				}
 			}
 		} else if (!(checkerPositions.get(v) != 0 && checkerPositions.containsValue(0)) || (checkerPositions.get(v) == 0)) {
+			// Select checker and mark it. Remove marking from other selected checker if there is one
 			if (imageViewSelectedChecker != null) {
 				imageViewSelectedChecker.setAlpha(1.0f);
 			}

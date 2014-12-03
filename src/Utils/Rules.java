@@ -30,7 +30,8 @@ public class Rules {
 	}
 	
 	public boolean validMove(int from, int to) {
-			
+		
+		// Put a marker from "hand" to the board
 		if(turn == Constants.BLACK && blackMarkers > 0) {
 			playingfield[to] = Constants.BLACK;
 			blackMarkers--;
@@ -52,9 +53,11 @@ public class Rules {
 			return false;
 		}
 		
+		// Move the marker to it's new position
 		playingfield[to] = playingfield[from];
 		playingfield[from] = EMPTY_FIELD;
 		
+		// Change turn
 		if(turn == Constants.WHITE) {
 			turn = Constants.BLACK;
 		} else {
@@ -127,6 +130,7 @@ public class Rules {
 	}
 	
 	public boolean canRemove(int partOfLine) {
+		// Check if the argument is part of a line on the board
 		if(playingfield[partOfLine] == EMPTY_FIELD) {
 			return false;
 		}
@@ -182,6 +186,12 @@ public class Rules {
 		return false;
 	}
 	
+	/**
+	 * Remove a marker from the position if it matches the color
+	 * @param from
+	 * @param color
+	 * @return
+	 */
 	public boolean remove(int from, int color) {
 		if (playingfield[from] == color) {
 			playingfield[from] = EMPTY_FIELD;
