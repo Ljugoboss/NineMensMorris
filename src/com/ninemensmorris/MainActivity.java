@@ -1,6 +1,7 @@
 package com.ninemensmorris;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import Utils.Constants;
 import Utils.Rules;
@@ -30,6 +31,7 @@ public class MainActivity extends Activity {
 	private ImageView imageViewSelectedChecker;
 	private ImageView imageViewAreaToMoveTo;
 	private ImageView imageViewAreaToMoveFrom;
+	private HashMap<ImageView, Integer> checkerPositions;
 
 	private boolean hasSelectedChecker = false;
 
@@ -42,6 +44,7 @@ public class MainActivity extends Activity {
 		imageViewSelectedChecker = null;
 		imageViewAreaToMoveTo = null;
 		imageViewAreaToMoveFrom = null;
+		checkerPositions = new HashMap<ImageView, Integer>();
 
 		arrayListWhiteCheckers = new ArrayList<ImageView>();
 		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker1));
@@ -92,34 +95,40 @@ public class MainActivity extends Activity {
 		arrayListAreas.add((ImageView) findViewById(R.id.area24));
 
 		for (ImageView v : arrayListWhiteCheckers) {
+			checkerPositions.put(v, 0);
 			v.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					if (rules.getTurn() == Constants.WHITE) {
-						if (imageViewSelectedChecker != null) {
-							imageViewSelectedChecker.setAlpha(1.0f);
+						if (!(checkerPositions.get(v) != 0 && checkerPositions.containsValue(0)) || (checkerPositions.get(v) == 0)) {
+							if (imageViewSelectedChecker != null) {
+								imageViewSelectedChecker.setAlpha(1.0f);
+							}
+							hasSelectedChecker = true;
+							imageViewSelectedChecker = (ImageView) v;
+							imageViewSelectedChecker.setAlpha(0.5f);
 						}
-						hasSelectedChecker = true;
-						imageViewSelectedChecker = (ImageView) v;
-						imageViewSelectedChecker.setAlpha(0.5f);				
 					}
 				}
 			});
 		}
 
 		for (ImageView v : arrayListBlackCheckers) {
+			checkerPositions.put(v, 0);
 			v.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					if (rules.getTurn() == Constants.BLACK) {
-						if (imageViewSelectedChecker != null) {
-							imageViewSelectedChecker.setAlpha(1.0f);
+						if (!(checkerPositions.get(v) != 0 && checkerPositions.containsValue(0)) || (checkerPositions.get(v) == 0)) {
+							if (imageViewSelectedChecker != null) {
+								imageViewSelectedChecker.setAlpha(1.0f);
+							}
+							hasSelectedChecker = true;
+							imageViewSelectedChecker = (ImageView) v;
+							imageViewSelectedChecker.setAlpha(0.5f);
 						}
-						hasSelectedChecker = true;
-						imageViewSelectedChecker = (ImageView) v;
-						imageViewSelectedChecker.setAlpha(0.5f);					
 					}
 				}
 			});
@@ -133,15 +142,15 @@ public class MainActivity extends Activity {
 					// TODO Auto-generated method stub
 					if (hasSelectedChecker) {
 						imageViewAreaToMoveTo = (ImageView) v;
-						int from = 0;
+
 						if (imageViewAreaToMoveFrom != null) {
 							imageViewSelectedChecker.setAlpha(1.0f);
-							from = Integer.parseInt((String) imageViewAreaToMoveFrom.getContentDescription());
 						}
-//						if (rules.validMove(from, Integer.parseInt((String) imageViewAreaToMoveTo.getContentDescription()))) {
+						if (rules.validMove(checkerPositions.get(imageViewSelectedChecker), Integer.parseInt((String) imageViewAreaToMoveTo.getContentDescription()))) {
 							moveChecker();
-//						}	
-						moveChecker();
+							// Remember new position
+							checkerPositions.put((ImageView) imageViewSelectedChecker, Integer.parseInt((String) imageViewAreaToMoveTo.getContentDescription()));
+						}	
 						imageViewSelectedChecker.setAlpha(1.0f);
 						hasSelectedChecker = false;
 						imageViewSelectedChecker = null;
@@ -181,7 +190,7 @@ public class MainActivity extends Activity {
 					//						from = 0;
 					//					}
 					//					rules.validMove(from, Integer.parseInt((String) imageViewAreaToMoveTo.getContentDescription()));
-//					moveChecker();
+					//					moveChecker();
 				}
 			}
 			break;
@@ -251,7 +260,7 @@ public class MainActivity extends Activity {
 		final int[] locationArea = {0, 0};
 		tmpImageViewSelectedChecker.getLocationOnScreen(locationChecker);
 		tmpImageViewAreaToMoveTo.getLocationOnScreen(locationArea);
-		
+
 		TranslateAnimation tAnimation = new TranslateAnimation(0, locationArea[0] - locationChecker[0], 0, locationArea[1] - locationChecker[1]);
 		tAnimation.setFillEnabled(false);
 		tAnimation.setFillAfter(false);
