@@ -18,7 +18,6 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 
@@ -252,6 +251,8 @@ public class MainActivity extends Activity {
 				}
 
 				tmpImageViewSelectedChecker.setLayoutParams(tmpImageViewAreaToMoveTo.getLayoutParams());
+				
+				tmpImageViewSelectedChecker.setDrawingCacheEnabled(true);
 			}
 
 			@Override
@@ -261,7 +262,7 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onAnimationStart(Animation animation) {
-				// TODO Auto-generated method stub
+				tmpImageViewSelectedChecker.setDrawingCacheEnabled(false);
 			}
 		});
 		imageViewSelectedChecker.startAnimation(tAnimation);
