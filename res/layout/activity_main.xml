@@ -43,14 +43,16 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="25dp" />
+            android:layout_marginTop="25dp"
+            android:contentDescription="1" />
 
         <ImageView
             android:id="@+id/area2"
             style="@style/Hitbox"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp" />
+            android:layout_marginTop="25dp"
+            android:contentDescription="2" />
 
         <ImageView
             android:id="@+id/area3"
@@ -58,21 +60,24 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="25dp"
-            android:layout_marginTop="25dp" />
+            android:layout_marginTop="25dp"
+            android:contentDescription="3" />
 
         <ImageView
             android:id="@+id/area10"
             style="@style/Hitbox"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="25dp" />
+            android:layout_marginLeft="25dp"
+            android:contentDescription="10" />
 
         <ImageView
             android:id="@+id/area15"
             style="@style/Hitbox"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="25dp" />
+            android:layout_marginRight="25dp"
+            android:contentDescription="15" />
 
         <ImageView
             android:id="@+id/area22"
@@ -80,14 +85,16 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_marginBottom="25dp"
-            android:layout_marginLeft="25dp" />
+            android:layout_marginLeft="25dp"
+            android:contentDescription="22" />
 
         <ImageView
             android:id="@+id/area23"
             style="@style/Hitbox"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="25dp" />
+            android:layout_marginBottom="25dp"
+            android:contentDescription="23" />
 
         <ImageView
             android:id="@+id/area24"
@@ -95,7 +102,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="25dp"
-            android:layout_marginRight="25dp" />
+            android:layout_marginRight="25dp"
+            android:contentDescription="24" />
 
         <!-- middle circle -->
 
@@ -104,52 +112,60 @@
             style="@style/Hitbox"
             android:layout_below="@id/area2"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="4dp"
+            android:contentDescription="5" />
 
         <ImageView
             android:id="@+id/area11"
             style="@style/Hitbox"
             android:layout_centerVertical="true"
             android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@id/area10" />
+            android:layout_toRightOf="@id/area10"
+            android:contentDescription="11" />
 
         <ImageView
             android:id="@+id/area14"
             style="@style/Hitbox"
             android:layout_centerVertical="true"
             android:layout_marginRight="4dp"
-            android:layout_toLeftOf="@id/area15" />
+            android:layout_toLeftOf="@id/area15"
+            android:contentDescription="14" />
 
         <ImageView
             android:id="@+id/area20"
             style="@style/Hitbox"
             android:layout_above="@id/area23"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="4dp" />
+            android:layout_marginBottom="4dp"
+            android:contentDescription="20" />
 
         <ImageView
             android:id="@+id/area4"
             style="@style/Hitbox"
             android:layout_alignLeft="@id/area11"
-            android:layout_alignTop="@id/area5" />
+            android:layout_alignTop="@id/area5"
+            android:contentDescription="4" />
 
         <ImageView
             android:id="@+id/area6"
             style="@style/Hitbox"
             android:layout_alignRight="@id/area14"
-            android:layout_alignTop="@id/area5" />
+            android:layout_alignTop="@id/area5"
+            android:contentDescription="6" />
 
         <ImageView
             android:id="@+id/area19"
             style="@style/Hitbox"
             android:layout_alignBottom="@id/area20"
-            android:layout_alignLeft="@id/area11" />
+            android:layout_alignLeft="@id/area11"
+            android:contentDescription="19" />
 
         <ImageView
             android:id="@+id/area21"
             style="@style/Hitbox"
             android:layout_alignBottom="@id/area20"
-            android:layout_alignRight="@id/area14" />
+            android:layout_alignRight="@id/area14"
+            android:contentDescription="21" />
 
         <!-- middle circle -->
 
@@ -158,52 +174,60 @@
             style="@style/Hitbox"
             android:layout_below="@id/area5"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="4dp"
+            android:contentDescription="8" />
 
         <ImageView
             android:id="@+id/area12"
             style="@style/Hitbox"
             android:layout_centerVertical="true"
             android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@id/area11" />
+            android:layout_toRightOf="@id/area11"
+            android:contentDescription="12" />
 
         <ImageView
             android:id="@+id/area13"
             style="@style/Hitbox"
             android:layout_centerVertical="true"
             android:layout_marginRight="4dp"
-            android:layout_toLeftOf="@id/area14" />
+            android:layout_toLeftOf="@id/area14"
+            android:contentDescription="13" />
 
         <ImageView
             android:id="@+id/area17"
             style="@style/Hitbox"
             android:layout_above="@id/area20"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="4dp" />
+            android:layout_marginBottom="4dp"
+            android:contentDescription="17" />
 
         <ImageView
             android:id="@+id/area7"
             style="@style/Hitbox"
             android:layout_alignLeft="@id/area12"
-            android:layout_alignTop="@id/area8" />
+            android:layout_alignTop="@id/area8"
+            android:contentDescription="7" />
 
         <ImageView
             android:id="@+id/area9"
             style="@style/Hitbox"
             android:layout_alignRight="@id/area13"
-            android:layout_alignTop="@id/area8" />
+            android:layout_alignTop="@id/area8"
+            android:contentDescription="9" />
 
         <ImageView
             android:id="@+id/area16"
             style="@style/Hitbox"
             android:layout_alignBottom="@id/area17"
-            android:layout_alignLeft="@id/area12" />
+            android:layout_alignLeft="@id/area12"
+            android:contentDescription="16" />
 
         <ImageView
             android:id="@+id/area18"
             style="@style/Hitbox"
             android:layout_alignBottom="@id/area17"
-            android:layout_alignRight="@id/area13" />
+            android:layout_alignRight="@id/area13"
+            android:contentDescription="18" />
     </RelativeLayout>
 
     <LinearLayout
