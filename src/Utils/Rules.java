@@ -64,9 +64,13 @@ public class Rules {
 		return true;
 	}
 	
-	private boolean isValidMove(int from, int to) {
+	public boolean isValidMove(int from, int to) {
 		if(playingfield[to] != EMPTY_FIELD)  {
 			return false;
+		}
+		
+		if(from == 0) {
+			return true;
 		}
 		
 		switch (to) {

@@ -141,11 +141,9 @@ public class MainActivity extends Activity {
 						int to = Integer.parseInt((String) imageViewAreaToMoveTo.getContentDescription());
 						int from = checkerPositions.get(imageViewSelectedChecker);
 						if (rules.validMove(from, to)) { // This line will change turn
+							unMarkAllFields();
 							moveChecker();
-
-							// Delete old position and remember new position
-							rules.remove(from, Constants.WHITE);
-							rules.remove(from, Constants.BLACK);
+							
 							checkerPositions.put((ImageView) imageViewSelectedChecker, Integer.parseInt((String) imageViewAreaToMoveTo.getContentDescription()));
 
 							removeNextChecker = rules.canRemove(to);
@@ -240,6 +238,7 @@ public class MainActivity extends Activity {
 	private void selectChecker(View v) {
 		if (removeNextChecker) {
 			if(rules.getTurn() == Constants.BLACK && rules.remove(checkerPositions.get(v), Constants.BLACK)) {
+				unMarkAllFields();
 				arrayListBlackCheckers.remove(v);
 				removeNextChecker = false;
 				ViewGroup parent = ((ViewGroup)v.getParent());
@@ -250,6 +249,7 @@ public class MainActivity extends Activity {
 				}
 			} 
 			else if(rules.getTurn() == Constants.WHITE && rules.remove(checkerPositions.get(v), Constants.WHITE)) {
+				unMarkAllFields();
 				arrayListWhiteCheckers.remove(v);
 				removeNextChecker = false;
 				ViewGroup parent = ((ViewGroup)v.getParent());
@@ -263,9 +263,30 @@ public class MainActivity extends Activity {
 			if (imageViewSelectedChecker != null) {
 				imageViewSelectedChecker.setAlpha(1.0f);
 			}
+			if(imageViewSelectedChecker == v) {
+				hasSelectedChecker = false;
+				imageViewSelectedChecker = null;
+				unMarkAllFields();
+				return;
+			}
+			markAvailableMoveFields(checkerPositions.get(v));
 			hasSelectedChecker = true;
 			imageViewSelectedChecker = (ImageView) v;
 			imageViewSelectedChecker.setAlpha(0.5f);
+		}
+	}
+	
+	private void markAvailableMoveFields(int from) {
+		for(int i = 0; i < 24; i++) {
+			if(rules.isValidMove(from, i+1)) {
+				arrayListAreas.get(i).setBackgroundResource(R.drawable.valid_move);
+			}
+		}
+	}
+	
+	private void unMarkAllFields() {
+		for(FrameLayout f : arrayListAreas) {
+			f.setBackgroundResource(0);
 		}
 	}
 }
