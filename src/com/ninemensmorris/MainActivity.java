@@ -6,6 +6,7 @@ import java.util.HashMap;
 import Utils.Constants;
 import Utils.Rules;
 import android.app.Activity;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +35,8 @@ public class MainActivity extends Activity {
 	private HashMap<ImageView, Integer> checkerPositions;
 
 	private boolean hasSelectedChecker = false;
+	private boolean removeNextChecker = false;
+	private boolean isWin = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +104,18 @@ public class MainActivity extends Activity {
 
 				@Override
 				public void onClick(View v) {
-					if (rules.getTurn() == Constants.WHITE) {
-						if (!(checkerPositions.get(v) != 0 && checkerPositions.containsValue(0)) || (checkerPositions.get(v) == 0)) {
+					if (rules.getTurn() == Constants.WHITE && !isWin) {
+						if (removeNextChecker) {
+							arrayListWhiteCheckers.remove(v);
+							rules.remove(checkerPositions.get(v), Constants.WHITE);
+							removeNextChecker = false;
+							ViewGroup parent = ((ViewGroup)v.getParent());
+							parent.removeView(v);
+							playerTurn.setText("White turn");
+							if (rules.isItAWin(Constants.WHITE)) {
+								playerTurn.setText("White wins!");
+							}
+						} else if (!(checkerPositions.get(v) != 0 && checkerPositions.containsValue(0)) || (checkerPositions.get(v) == 0)) {
 							if (imageViewSelectedChecker != null) {
 								imageViewSelectedChecker.setAlpha(1.0f);
 							}
@@ -121,8 +134,18 @@ public class MainActivity extends Activity {
 
 				@Override
 				public void onClick(View v) {
-					if (rules.getTurn() == Constants.BLACK) {
-						if (!(checkerPositions.get(v) != 0 && checkerPositions.containsValue(0)) || (checkerPositions.get(v) == 0)) {
+					if (rules.getTurn() == Constants.BLACK && !isWin) {
+						if (removeNextChecker) {
+							arrayListBlackCheckers.remove(v);
+							rules.remove(checkerPositions.get(v), Constants.BLACK);
+							removeNextChecker = false;
+							ViewGroup parent = ((ViewGroup)v.getParent());
+							parent.removeView(v);
+							playerTurn.setText("Black turn");
+							if (rules.isItAWin(Constants.BLACK)) {
+								playerTurn.setText("Black wins!");
+							}
+						} else if (!(checkerPositions.get(v) != 0 && checkerPositions.containsValue(0)) || (checkerPositions.get(v) == 0)) {
 							if (imageViewSelectedChecker != null) {
 								imageViewSelectedChecker.setAlpha(1.0f);
 							}
@@ -148,20 +171,33 @@ public class MainActivity extends Activity {
 							imageViewSelectedChecker.setAlpha(1.0f);
 						}
 						int to = Integer.parseInt((String) imageViewAreaToMoveTo.getContentDescription());
-						if (rules.validMove(checkerPositions.get(imageViewSelectedChecker), to)) {
+						int from = checkerPositions.get(imageViewSelectedChecker);
+						if (rules.validMove(from, to)) { // This line will change turn
 							moveChecker();
 
-							// Remember new position
+							// Delete old position and remember new position
+							rules.remove(from, Constants.WHITE);
+							rules.remove(from, Constants.BLACK);
 							checkerPositions.put((ImageView) imageViewSelectedChecker, Integer.parseInt((String) imageViewAreaToMoveTo.getContentDescription()));
+							
+							removeNextChecker = rules.canRemove(to);
 						}
 						
 						imageViewSelectedChecker.setAlpha(1.0f);
 						hasSelectedChecker = false;
 						imageViewSelectedChecker = null;
-						if (rules.getTurn() == Constants.WHITE) {
-							playerTurn.setText("White turn");
+						if (removeNextChecker) {
+							if (rules.getTurn() == Constants.WHITE) {
+								playerTurn.setText("Remove White");
+							} else {
+								playerTurn.setText("Remove Black");
+							}
 						} else {
-							playerTurn.setText("Black turn");
+							if (rules.getTurn() == Constants.WHITE) {
+								playerTurn.setText("White turn");
+							} else {
+								playerTurn.setText("Black turn");
+							}
 						}
 					}
 				}
@@ -185,7 +221,7 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
-
+				
 				// Remove the checker from the side of the board onto the board and add a new view to hold its place.
 				if (tmpImageViewSelectedChecker.getParent() != findViewById(R.id.board)) {
 					ViewGroup parent = ((ViewGroup)tmpImageViewSelectedChecker.getParent());
