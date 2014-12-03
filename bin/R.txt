@@ -238,7 +238,8 @@ int drawable black_checker 0x7f020057
 int drawable ic_launcher 0x7f020058
 int drawable ninemenmorrisbg 0x7f020059
 int drawable ninemenmorrisboard 0x7f02005a
-int drawable white_checker 0x7f02005b
+int drawable valid_move 0x7f02005b
+int drawable white_checker 0x7f02005c
 int id TurnText 0x7f05003d
 int id action_bar 0x7f05001c
 int id action_bar_activity_content 0x7f050015

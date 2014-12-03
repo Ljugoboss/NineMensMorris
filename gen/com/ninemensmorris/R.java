@@ -1081,7 +1081,8 @@ containing a value of this type.
         public static final int ic_launcher=0x7f020058;
         public static final int ninemenmorrisbg=0x7f020059;
         public static final int ninemenmorrisboard=0x7f02005a;
-        public static final int white_checker=0x7f02005b;
+        public static final int valid_move=0x7f02005b;
+        public static final int white_checker=0x7f02005c;
     }
     public static final class id {
         public static final int TurnText=0x7f05003d;
