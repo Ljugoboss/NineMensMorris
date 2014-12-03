@@ -127,6 +127,7 @@ public class MainActivity extends Activity {
 			});
 		}
 
+		// Determines if the move is valid and changes turns
 		for (FrameLayout v : arrayListAreas) {
 			v.setOnClickListener(new OnClickListener() {
 
@@ -191,6 +192,9 @@ public class MainActivity extends Activity {
 		} 
 	} 
 
+	/**
+	 * Creates an animation that will move the checker from its current position to the new. Repositions the checker after animation is done.
+	 */
 	private void moveChecker() {
 		// Create two temporary final variables so that the onAnimationEnd method uses the right values
 		final ImageView tmpImageViewSelectedChecker = imageViewSelectedChecker;
@@ -235,6 +239,10 @@ public class MainActivity extends Activity {
 		imageViewSelectedChecker.startAnimation(tAnimation);
 	}
 
+	/**
+	 * Tries to select the clicked checker. If the previous player hade 3-in-a-row, the checker will be removed instead. Also determines if someone has won.
+	 * @param v
+	 */
 	private void selectChecker(View v) {
 		if (removeNextChecker) {
 			// If the previous player got 3-in-a-row, remove a choosen checker from the other player			
@@ -278,6 +286,10 @@ public class MainActivity extends Activity {
 		}
 	}
 	
+	/**
+	 * Mark all avalible moves that can be done.
+	 * @param from
+	 */
 	private void markAvailableMoveFields(int from) {
 		for(int i = 0; i < 24; i++) {
 			if(rules.isValidMove(from, i+1)) {
@@ -286,6 +298,9 @@ public class MainActivity extends Activity {
 		}
 	}
 	
+	/**
+	 * Unmark all fields.
+	 */
 	private void unMarkAllFields() {
 		for(FrameLayout f : arrayListAreas) {
 			f.setBackgroundResource(0);
