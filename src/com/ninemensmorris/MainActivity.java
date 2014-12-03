@@ -173,7 +173,7 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -236,12 +236,11 @@ public class MainActivity extends Activity {
 		});
 		imageViewSelectedChecker.startAnimation(tAnimation);
 	}
-	
+
 	private void selectChecker(View v) {
 		if (removeNextChecker) {
-			if(rules.getTurn() == Constants.BLACK) {
+			if(rules.getTurn() == Constants.BLACK && rules.remove(checkerPositions.get(v), Constants.BLACK)) {
 				arrayListBlackCheckers.remove(v);
-				rules.remove(checkerPositions.get(v), Constants.BLACK);
 				removeNextChecker = false;
 				ViewGroup parent = ((ViewGroup)v.getParent());
 				parent.removeView(v);
@@ -249,9 +248,9 @@ public class MainActivity extends Activity {
 				if (rules.isItAWin(Constants.BLACK)) {
 					playerTurn.setText("White wins!");
 				}
-			} else {
+			} 
+			else if(rules.getTurn() == Constants.WHITE && rules.remove(checkerPositions.get(v), Constants.WHITE)) {
 				arrayListWhiteCheckers.remove(v);
-				rules.remove(checkerPositions.get(v), Constants.WHITE);
 				removeNextChecker = false;
 				ViewGroup parent = ((ViewGroup)v.getParent());
 				parent.removeView(v);
