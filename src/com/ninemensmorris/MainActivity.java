@@ -234,7 +234,11 @@ public class MainActivity extends Activity {
 		}
 
 
-		int [] tmpPlayingfield = rules.getPlayingfield();
+		// Initialize tmpPlayingfiled
+		int[] tmpPlayingfield = new int[25];
+		for (int i=0; i<tmpPlayingfield.length; i++) {
+			tmpPlayingfield[i] = rules.getPlayingfieldField(i);
+		}
 		checkerPositions = new HashMap<ImageView, Integer>();
 		for (ImageView v : whiteCheckers) {
 			int i = 0;
@@ -263,30 +267,34 @@ public class MainActivity extends Activity {
 		}
 
 		ViewGroup parent;
+		int j = 0;
+		int k = 0;
+		// Reset tmpPlayingfiled
+		for (int i=0; i<tmpPlayingfield.length; i++) {
+			tmpPlayingfield[i] = rules.getPlayingfieldField(i);
+		}
 		for (int i=0; i<tmpPlayingfield.length; i++) {
 			int area = tmpPlayingfield[i];
 			if (area == Constants.WHITE) {
-				selectedChecker = whiteCheckers.get(i);
+				selectedChecker = whiteCheckers.get(j);
+				j++;
 				parent = ((ViewGroup)selectedChecker.getParent());
-
-				higBoxAreas.get(area).addView(selectedChecker);
 
 				if (parent != findViewById(R.id.board)) {
 
 					//Remove the read checker and add the ghost where the real one was.
-					int index = parent.indexOfChild(selectedChecker);
 					parent.removeView(selectedChecker);
 					//Move the real one to the board
 					((ViewGroup) findViewById(R.id.board)).addView(selectedChecker);
-
-				}				
+//					higBoxAreas.get(area).addView(selectedChecker);
+				}
+				
 				selectedChecker.setLayoutParams(higBoxAreas.get(area).getLayoutParams());
 
 			} else if (area == Constants.BLACK) {
-				selectedChecker = blackCheckers.get(i);
+				selectedChecker = blackCheckers.get(k);
+				k++;
 				parent = ((ViewGroup)selectedChecker.getParent());
-
-				higBoxAreas.get(area).addView(selectedChecker);
 
 				if (parent != findViewById(R.id.board)) {
 
@@ -295,8 +303,9 @@ public class MainActivity extends Activity {
 					parent.removeView(selectedChecker);
 					//Move the real one to the board
 					((ViewGroup) findViewById(R.id.board)).addView(selectedChecker);
-
-				}				
+//					higBoxAreas.get(area).addView(selectedChecker);
+				}	
+				
 				selectedChecker.setLayoutParams(higBoxAreas.get(area).getLayoutParams());
 			}
 		}

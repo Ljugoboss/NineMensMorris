@@ -279,14 +279,17 @@ public class Rules {
 
 	public void restoreData(SharedPreferences sp) {
 		for (int i=0; i<playingfield.length; i++) {
-			playingfield[i] = sp.getInt(PLAYINGFIELD + i, EMPTY_FIELD);
+			playingfield[i] = sp.getInt(PLAYINGFIELD + i, 0);
 		}
 		whiteMarkers = sp.getInt(WHITE_MARKERS, 9);
 		blackMarkers = sp.getInt(BLACK_MARKERS, 9);
 		turn = sp.getInt(TURN, Constants.WHITE);
 	}
 	
-	public int[] getPlayingfield() {
-		return playingfield;
+	public int getPlayingfieldField(int pos) {
+		if (pos >= 0 && pos < playingfield.length) {
+		return playingfield[pos];
+		}
+		return -1;
 	}
 }
