@@ -178,6 +178,16 @@ public class MainActivity extends Activity {
 									playerTurn.setText("Black turn");
 								}
 							}
+							//Did someone win?
+							isWin = rules.isItAWin(rules.getTurn());
+							if(isWin) {
+								if (rules.getTurn() == Constants.BLACK) {
+									playerTurn.setText("White wins!");
+								} else {
+									playerTurn.setText("Black wins!");
+								}
+
+							}
 						}
 					}
 				}
@@ -315,8 +325,8 @@ public class MainActivity extends Activity {
 				playerTurn.setText("Black turn");
 
 				//Did someone win?
-				if (rules.isItAWin(Constants.BLACK)) {
-					isWin = true;
+				isWin = rules.isItAWin(Constants.BLACK);
+				if (isWin) {
 					playerTurn.setText("White wins!");
 				}
 			} 
@@ -330,8 +340,8 @@ public class MainActivity extends Activity {
 				playerTurn.setText("White turn");
 
 				//Did someone win?
-				if (rules.isItAWin(Constants.WHITE)) {
-					isWin = true;
+				isWin = rules.isItAWin(Constants.WHITE);
+				if (isWin) {
 					playerTurn.setText("Black wins!");
 				}
 			}

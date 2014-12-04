@@ -1,5 +1,9 @@
 package Utils;
 
+import com.ninemensmorris.R;
+
+import android.util.Log;
+
 /*
  * The game board positions
  *
@@ -14,21 +18,22 @@ package Utils;
  */
 
 public class Rules {
+	private final String TAG = "Rules";
 	private int[] playingfield;
 	private int turn;
 	//Markers not on the playing field
 	private int blackMarkers;
 	private int whiteMarkers;
-	
+
 	private final int EMPTY_FIELD = 0;
-	
+
 	public Rules() {
 		playingfield = new int[25];
 		blackMarkers = 9;
 		whiteMarkers = 9;
 		turn = Constants.WHITE; //Random who will begin?
 	}
-	
+
 	/**
 	 * Try to move the checker.
 	 * @param from The position to move from.
@@ -36,7 +41,7 @@ public class Rules {
 	 * @return True if the move was successful, else false is returned.
 	 */
 	public boolean validMove(int from, int to) {
-		
+
 		// Put a marker from "hand" to the board
 		if(blackMarkers > 0 && turn == Constants.BLACK && playingfield[to] == EMPTY_FIELD) {
 			playingfield[to] = Constants.BLACK;
@@ -50,31 +55,31 @@ public class Rules {
 			turn = Constants.BLACK;
 			return true;
 		}
-		
+
 		//Not the right players turn
 		if(playingfield[from] != turn) {
 			return false;
 		}
-		
+
 		//Not a valid move
 		if(!isValidMove(from, to)) {
 			return false;
 		}
-		
+
 		// Move the marker to it's new position
 		playingfield[to] = playingfield[from];
 		playingfield[from] = EMPTY_FIELD;
-		
+
 		// Change turn
 		if(turn == Constants.WHITE) {
 			turn = Constants.BLACK;
 		} else {
 			turn = Constants.WHITE;
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Is it a valid move?
 	 * @param from The area the checker is at.
@@ -86,12 +91,17 @@ public class Rules {
 		if(playingfield[to] != EMPTY_FIELD)  {
 			return false;
 		}
-		
+
 		//If it is from the side board, all moves are valid.
 		if(from == 0) {
 			return true;
 		}
-		
+
+		//If it is flying phase, all moves are valid.
+		if(isItFlyingPhase(playingfield[from])) {
+			return true;
+		}
+
 		//Can only move to it's neighbors.
 		switch (to) {
 		case 1:
@@ -145,7 +155,7 @@ public class Rules {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Check if the player is allowed to remove a checker from the other player. 
 	 * @param partOfLine The position of the checker.
@@ -156,7 +166,7 @@ public class Rules {
 		if(playingfield[partOfLine] == EMPTY_FIELD) {
 			return false;
 		}
-		
+
 		//All possible lines.
 		if((partOfLine == 1 || partOfLine == 2 || partOfLine == 3) && (playingfield[1] == playingfield[2] && playingfield[2] == playingfield[3])) {
 			return true;
@@ -208,7 +218,7 @@ public class Rules {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Remove a marker from the position if it matches the color
 	 * @param from The checker to be removed.
@@ -222,7 +232,7 @@ public class Rules {
 		} else
 			return false;
 	}
-	
+
 	/**
 	 * Check if color 'color' has lost
 	 * @param color The color which may have lost.
@@ -233,6 +243,12 @@ public class Rules {
 		if(whiteMarkers > 0 || blackMarkers > 0) {
 			return false;
 		}
+		
+		//color lost if there is no valid moves
+		if(!hasValidMoves(color)) {
+			return true;
+		}
+		
 		//Does the color have less then 3 checkers left?
 		int count = 0;
 		for(int i : playingfield) {
@@ -242,7 +258,38 @@ public class Rules {
 		}
 		return (count < 3);
 	}
-	
+
+	private boolean hasValidMoves(int color) {
+		for(int i = 0; i < 24; i++) {
+			if(playingfield[i+1] == color) {
+				Log.i(TAG, "found color: " + color);
+				for(int j = 0; j < 24; j++) {
+					if(isValidMove(i+1, j+1)) {
+						Log.i(TAG, "Has valid moves");
+						return true;
+					}
+				}
+			}
+		}
+		Log.i(TAG, "Doesn't have valid moves");
+		return false;
+	}
+
+	/**
+	 * 
+	 * @param color The color which may be in the flying phase.
+	 * @return True if it has exactly 3 checkers left, else return false.
+	 */
+	private boolean isItFlyingPhase(int color) {
+		int count = 0;
+		for(int i : playingfield) {
+			if(i == color) {
+				count++;
+			}
+		}
+		return (count == 3);
+	}
+
 	/**
 	 * 
 	 * @param field The field to be checked.
@@ -251,7 +298,7 @@ public class Rules {
 	public int fieldColor(int field) {
 		return playingfield[field];
 	}
-	
+
 	/**
 	 * 
 	 * @return The player whos turn it is.
