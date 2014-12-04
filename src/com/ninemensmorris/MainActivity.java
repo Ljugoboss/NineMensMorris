@@ -241,7 +241,7 @@ public class MainActivity extends Activity {
 		}
 		checkerPositions = new HashMap<ImageView, Integer>();
 		for (ImageView v : whiteCheckers) {
-			int i = 0;
+			int i = 1;
 			checkerPositions.put(v, 0);
 			while (i<tmpPlayingfield.length) {
 				if (rules.fieldColor(i) == Constants.WHITE) {
@@ -254,7 +254,7 @@ public class MainActivity extends Activity {
 		}
 
 		for (ImageView v : blackCheckers) {
-			int i = 0;
+			int i = 1;
 			checkerPositions.put(v, 0);
 			while (i<tmpPlayingfield.length) {
 				if (rules.fieldColor(i) == Constants.BLACK) {
@@ -273,7 +273,7 @@ public class MainActivity extends Activity {
 		for (int i=0; i<tmpPlayingfield.length; i++) {
 			tmpPlayingfield[i] = rules.getPlayingfieldField(i);
 		}
-		for (int i=0; i<tmpPlayingfield.length; i++) {
+		for (int i=1; i<tmpPlayingfield.length; i++) {
 			int area = tmpPlayingfield[i];
 			if (area == Constants.WHITE) {
 				selectedChecker = whiteCheckers.get(j);
@@ -289,7 +289,7 @@ public class MainActivity extends Activity {
 //					higBoxAreas.get(area).addView(selectedChecker);
 				}
 				
-				selectedChecker.setLayoutParams(higBoxAreas.get(area).getLayoutParams());
+				selectedChecker.setLayoutParams(higBoxAreas.get(i-1).getLayoutParams());
 
 			} else if (area == Constants.BLACK) {
 				selectedChecker = blackCheckers.get(k);
@@ -306,7 +306,7 @@ public class MainActivity extends Activity {
 //					higBoxAreas.get(area).addView(selectedChecker);
 				}	
 				
-				selectedChecker.setLayoutParams(higBoxAreas.get(area).getLayoutParams());
+				selectedChecker.setLayoutParams(higBoxAreas.get(i-1).getLayoutParams());
 			}
 		}
 	}
