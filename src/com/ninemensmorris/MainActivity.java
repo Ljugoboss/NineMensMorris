@@ -29,16 +29,13 @@ public class MainActivity extends Activity {
 	Rules rules = new Rules();
 
 	private TextView playerTurn;
-	private ArrayList<ImageView> arrayListWhiteCheckers;
-	private ArrayList<ImageView> arrayListBlackCheckers;
-	private ArrayList<FrameLayout> arrayListAreas;
+	private ArrayList<ImageView> whiteCheckers;
+	private ArrayList<ImageView> blackCheckers;
+	private ArrayList<FrameLayout> higBoxAreas;
 	private ImageView selectedChecker;
 	private FrameLayout areaToMoveTo;
-	private ImageView imageViewAreaToMoveFrom;
+	private ImageView areaToMoveFrom;
 	private HashMap<ImageView, Integer> checkerPositions;
-
-	private LinearLayout whiteCheckerArea;
-	private LinearLayout blackCheckerArea;
 
 	private boolean hasSelectedChecker = false;
 	private boolean removeNextChecker = false;
@@ -52,62 +49,60 @@ public class MainActivity extends Activity {
 
 		selectedChecker = null;
 		areaToMoveTo = null;
-		imageViewAreaToMoveFrom = null;
-		whiteCheckerArea = (LinearLayout) findViewById(R.id.whiteCheckerArea);
-		blackCheckerArea = (LinearLayout) findViewById(R.id.blackCheckerArea);
+		areaToMoveFrom = null;
 		checkerPositions = new HashMap<ImageView, Integer>();
 		playerTurn = (TextView) findViewById(R.id.TurnText);
 
 		// Initialize all views
-		arrayListWhiteCheckers = new ArrayList<ImageView>();
-		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker1));
-		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker2));
-		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker3));
-		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker4));
-		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker5));
-		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker6));
-		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker7));
-		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker8));
-		arrayListWhiteCheckers.add((ImageView) findViewById(R.id.whiteChecker9));
+		whiteCheckers = new ArrayList<ImageView>();
+		whiteCheckers.add((ImageView) findViewById(R.id.whiteChecker1));
+		whiteCheckers.add((ImageView) findViewById(R.id.whiteChecker2));
+		whiteCheckers.add((ImageView) findViewById(R.id.whiteChecker3));
+		whiteCheckers.add((ImageView) findViewById(R.id.whiteChecker4));
+		whiteCheckers.add((ImageView) findViewById(R.id.whiteChecker5));
+		whiteCheckers.add((ImageView) findViewById(R.id.whiteChecker6));
+		whiteCheckers.add((ImageView) findViewById(R.id.whiteChecker7));
+		whiteCheckers.add((ImageView) findViewById(R.id.whiteChecker8));
+		whiteCheckers.add((ImageView) findViewById(R.id.whiteChecker9));
 
-		arrayListBlackCheckers = new ArrayList<ImageView>();
-		arrayListBlackCheckers.add((ImageView) findViewById(R.id.blackChecker1));
-		arrayListBlackCheckers.add((ImageView) findViewById(R.id.blackChecker2));
-		arrayListBlackCheckers.add((ImageView) findViewById(R.id.blackChecker3));
-		arrayListBlackCheckers.add((ImageView) findViewById(R.id.blackChecker4));
-		arrayListBlackCheckers.add((ImageView) findViewById(R.id.blackChecker5));
-		arrayListBlackCheckers.add((ImageView) findViewById(R.id.blackChecker6));
-		arrayListBlackCheckers.add((ImageView) findViewById(R.id.blackChecker7));
-		arrayListBlackCheckers.add((ImageView) findViewById(R.id.blackChecker8));
-		arrayListBlackCheckers.add((ImageView) findViewById(R.id.blackChecker9));
+		blackCheckers = new ArrayList<ImageView>();
+		blackCheckers.add((ImageView) findViewById(R.id.blackChecker1));
+		blackCheckers.add((ImageView) findViewById(R.id.blackChecker2));
+		blackCheckers.add((ImageView) findViewById(R.id.blackChecker3));
+		blackCheckers.add((ImageView) findViewById(R.id.blackChecker4));
+		blackCheckers.add((ImageView) findViewById(R.id.blackChecker5));
+		blackCheckers.add((ImageView) findViewById(R.id.blackChecker6));
+		blackCheckers.add((ImageView) findViewById(R.id.blackChecker7));
+		blackCheckers.add((ImageView) findViewById(R.id.blackChecker8));
+		blackCheckers.add((ImageView) findViewById(R.id.blackChecker9));
 
-		arrayListAreas = new ArrayList<FrameLayout>();
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area1));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area2));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area3));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area4));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area5));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area6));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area7));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area8));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area9));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area10));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area11));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area12));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area13));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area14));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area15));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area16));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area17));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area18));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area19));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area20));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area21));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area22));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area23));
-		arrayListAreas.add((FrameLayout) findViewById(R.id.area24));
+		higBoxAreas = new ArrayList<FrameLayout>();
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area1));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area2));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area3));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area4));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area5));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area6));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area7));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area8));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area9));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area10));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area11));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area12));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area13));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area14));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area15));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area16));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area17));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area18));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area19));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area20));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area21));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area22));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area23));
+		higBoxAreas.add((FrameLayout) findViewById(R.id.area24));
 
-		for (ImageView v : arrayListWhiteCheckers) {
+		for (ImageView v : whiteCheckers) {
 			checkerPositions.put(v, 0);
 			v.setOnClickListener(new OnClickListener() {
 
@@ -120,7 +115,7 @@ public class MainActivity extends Activity {
 			});
 		}
 
-		for (ImageView v : arrayListBlackCheckers) {
+		for (ImageView v : blackCheckers) {
 			checkerPositions.put(v, 0);
 			v.setOnClickListener(new OnClickListener() {
 
@@ -134,7 +129,7 @@ public class MainActivity extends Activity {
 		}
 
 		// Determines if the move is valid and changes turns
-		for (FrameLayout v : arrayListAreas) {
+		for (FrameLayout v : higBoxAreas) {
 			v.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -143,7 +138,7 @@ public class MainActivity extends Activity {
 						int currentTurn = rules.getTurn();
 						areaToMoveTo = (FrameLayout) v;
 
-						if (imageViewAreaToMoveFrom != null) {
+						if (areaToMoveFrom != null) {
 							selectedChecker.setAlpha(1.0f);
 						}
 						int to = Integer.parseInt((String) areaToMoveTo.getContentDescription());
@@ -155,22 +150,22 @@ public class MainActivity extends Activity {
 							checkerPositions.put((ImageView) selectedChecker, Integer.parseInt((String) areaToMoveTo.getContentDescription()));
 
 							removeNextChecker = rules.canRemove(to);
-						}
-
-						selectedChecker.setAlpha(1.0f);
-						hasSelectedChecker = false;
-						selectedChecker = null;
-						if (removeNextChecker) {
-							if (currentTurn == Constants.BLACK) {
-								playerTurn.setText("Remove White");
+							selectedChecker.setAlpha(1.0f);
+							hasSelectedChecker = false;
+							selectedChecker = null;
+							
+							if (removeNextChecker) {
+								if (currentTurn == Constants.BLACK) {
+									playerTurn.setText("Remove White");
+								} else {
+									playerTurn.setText("Remove Black");
+								}
 							} else {
-								playerTurn.setText("Remove Black");
-							}
-						} else {
-							if (currentTurn == Constants.BLACK) {
-								playerTurn.setText("White turn");
-							} else {
-								playerTurn.setText("Black turn");
+								if (currentTurn == Constants.BLACK) {
+									playerTurn.setText("White turn");
+								} else {
+									playerTurn.setText("Black turn");
+								}
 							}
 						}
 					}
@@ -209,29 +204,37 @@ public class MainActivity extends Activity {
 		final int[] locationArea = {0, 0};
 		selectedChecker.getLocationOnScreen(locationChecker);
 		areaToMoveTo.getLocationOnScreen(locationArea);
+		Log.i(TAG, "move from x: " + locationChecker[0] + " y: " + locationChecker[1]);
+		Log.i(TAG, "move to x: " + locationArea[0] + " y: " + locationArea[1]);
+
+		ViewGroup parent = ((ViewGroup)selectedChecker.getParent());
+
+		if(turn == Constants.WHITE) {
+			animChecker = (ImageView) getLayoutInflater().inflate(R.layout.anim_white_checker, parent, false);
+		} else {
+			animChecker = (ImageView) getLayoutInflater().inflate(R.layout.anim_black_checker, parent, false);
+		}
+
 		//Move to the other layout
-		if (selectedChecker.getParent() != findViewById(R.id.board)) {
-			ViewGroup parent = ((ViewGroup)selectedChecker.getParent());
+		if (parent != findViewById(R.id.board)) {
 			//FrameLayout placeholder = (FrameLayout) getLayoutInflater().inflate(R.layout.layout_placeholder, parent, false);
 			int index = parent.indexOfChild(selectedChecker);
 			parent.removeView(selectedChecker);
 			//parent.addView(placeholder, index);
-			if(turn == Constants.WHITE) {
-				animChecker = (ImageView) getLayoutInflater().inflate(R.layout.anim_white_checker, parent, false);
-			} else {
-				animChecker = (ImageView) getLayoutInflater().inflate(R.layout.anim_black_checker, parent, false);
-			}
+
 			parent.addView(animChecker, index);
 			//Move the checker and make it invisible
 			((ViewGroup) findViewById(R.id.board)).addView(selectedChecker);
-			selectedChecker.setLayoutParams(areaToMoveTo.getLayoutParams());
-			selectedChecker.setVisibility(View.GONE);
+		} else {
+			parent.addView(animChecker);
+			animChecker.setLayoutParams(selectedChecker.getLayoutParams());
 		}
+
+		selectedChecker.setLayoutParams(areaToMoveTo.getLayoutParams());
+		selectedChecker.setVisibility(View.INVISIBLE);
+
 		final ImageView tmpAnimChecker = animChecker;
 		final ImageView tmpSelectedChecker = selectedChecker;
-		final FrameLayout tmpAreaToMoveTo = areaToMoveTo;
-		Log.i(TAG, "move from x: " + locationChecker[0] + " y: " + locationChecker[1]);
-		Log.i(TAG, "move to x: " + locationArea[0] + " y: " + locationArea[1]);
 
 		//Prepare animation with x and y movement
 		TranslateAnimation tAnimation = new TranslateAnimation(0, locationArea[0] - locationChecker[0], 0, locationArea[1] - locationChecker[1]);
@@ -243,16 +246,14 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
+				ViewGroup parent = ((ViewGroup)tmpAnimChecker.getParent());
 				if (tmpAnimChecker.getParent() != findViewById(R.id.board)) {
-					ViewGroup parent = ((ViewGroup)tmpAnimChecker.getParent());
 					FrameLayout placeholder = (FrameLayout) getLayoutInflater().inflate(R.layout.layout_placeholder, parent, false);
 					int index = parent.indexOfChild(tmpAnimChecker);
-					parent.removeView(tmpAnimChecker);
-					parent.addView(placeholder, index);
-					tmpSelectedChecker.setVisibility(View.VISIBLE);
-				} else {
-					tmpAnimChecker.setLayoutParams(tmpAreaToMoveTo.getLayoutParams());
+					parent.addView(placeholder, index);		
 				}
+				parent.removeView(tmpAnimChecker);
+				tmpSelectedChecker.setVisibility(View.VISIBLE);
 			}
 
 			@Override
@@ -264,7 +265,7 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		animChecker.startAnimation(tAnimation);
+		tmpAnimChecker.startAnimation(tAnimation);
 	}
 
 	/**
@@ -276,7 +277,7 @@ public class MainActivity extends Activity {
 			// If the previous player got 3-in-a-row, remove a choosen checker from the other player			
 			if(rules.getTurn() == Constants.BLACK && rules.remove(checkerPositions.get(v), Constants.BLACK)) {
 				unMarkAllFields();
-				arrayListBlackCheckers.remove(v);
+				blackCheckers.remove(v);
 				removeNextChecker = false;
 				ViewGroup parent = ((ViewGroup)v.getParent());
 				parent.removeView(v);
@@ -287,7 +288,7 @@ public class MainActivity extends Activity {
 			} 
 			else if(rules.getTurn() == Constants.WHITE && rules.remove(checkerPositions.get(v), Constants.WHITE)) {
 				unMarkAllFields();
-				arrayListWhiteCheckers.remove(v);
+				whiteCheckers.remove(v);
 				removeNextChecker = false;
 				ViewGroup parent = ((ViewGroup)v.getParent());
 				parent.removeView(v);
@@ -321,7 +322,7 @@ public class MainActivity extends Activity {
 	private void markAvailableMoveFields(int from) {
 		for(int i = 0; i < 24; i++) {
 			if(rules.isValidMove(from, i+1)) {
-				arrayListAreas.get(i).setBackgroundResource(R.drawable.valid_move);
+				higBoxAreas.get(i).setBackgroundResource(R.drawable.valid_move);
 			}
 		}
 	}
@@ -330,7 +331,7 @@ public class MainActivity extends Activity {
 	 * Unmark all fields.
 	 */
 	private void unMarkAllFields() {
-		for(FrameLayout f : arrayListAreas) {
+		for(FrameLayout f : higBoxAreas) {
 			f.setBackgroundResource(0);
 		}
 	}
