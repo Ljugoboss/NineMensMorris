@@ -129,7 +129,7 @@ public class MainActivity extends Activity {
 			});
 		}
 
-		//add a clickListnerer to all the hit box areas
+		//Add a clickListener to all the hit box areas
 		for (FrameLayout v : higBoxAreas) {
 			v.setOnClickListener(new OnClickListener() {
 
@@ -140,7 +140,6 @@ public class MainActivity extends Activity {
 						int currentTurn = rules.getTurn();
 						areaToMoveTo = (FrameLayout) v;
 
-						
 						//What areas are we moving from and to?
 						int to = Integer.parseInt((String) areaToMoveTo.getContentDescription());
 						int from = checkerPositions.get(selectedChecker);
@@ -154,10 +153,17 @@ public class MainActivity extends Activity {
 
 							//Did the row create a row of 3?
 							removeNextChecker = rules.canRemove(to);
+
 							selectedChecker.setAlpha(1.0f);
+
+							//The selected checker is not selected anymore
 							hasSelectedChecker = false;
 							selectedChecker = null;
-							
+							checkerPositions.put((ImageView) selectedChecker, Integer.parseInt((String) areaToMoveTo.getContentDescription()));
+
+							//Did the move create a row of 3?
+							removeNextChecker = rules.canRemove(to);
+
 							//Update the turn text
 							if (removeNextChecker) {
 								if (currentTurn == Constants.BLACK) {
@@ -192,6 +198,7 @@ public class MainActivity extends Activity {
 		switch (item.getItemId()) {
 		//Start a new game
 		case R.id.item1:
+			//Start a new game
 			finish();
 			startActivity(getIntent());
 			return true;           
@@ -217,12 +224,14 @@ public class MainActivity extends Activity {
 
 		ViewGroup parent = ((ViewGroup)selectedChecker.getParent());
 
-		//create a ghost checker which will be animated while the real on just moves.
+
+		//Create a ghost checker which will be animated while the real one just moves.
 		if(turn == Constants.WHITE) {
 			animChecker = (ImageView) getLayoutInflater().inflate(R.layout.anim_white_checker, parent, false);
 		} else {
 			animChecker = (ImageView) getLayoutInflater().inflate(R.layout.anim_black_checker, parent, false);
 		}
+
 
 		//If the checker is in the side board, we need to update the side board as well
 		if (parent != findViewById(R.id.board)) {
@@ -231,8 +240,11 @@ public class MainActivity extends Activity {
 			parent.removeView(selectedChecker);
 			parent.addView(animChecker, index);
 			//Move the real one to the side board
+
 			((ViewGroup) findViewById(R.id.board)).addView(selectedChecker);
+
 		} else {
+
 			//Add the ghost checker at the real ones position
 			parent.addView(animChecker);
 			animChecker.setLayoutParams(selectedChecker.getLayoutParams());
@@ -243,6 +255,7 @@ public class MainActivity extends Activity {
 		selectedChecker.setVisibility(View.INVISIBLE);
 
 		//final copies to be used in the animation thread
+
 		final ImageView tmpAnimChecker = animChecker;
 		final ImageView tmpSelectedChecker = selectedChecker;
 
@@ -259,11 +272,13 @@ public class MainActivity extends Activity {
 				ViewGroup parent = ((ViewGroup)tmpAnimChecker.getParent());
 				//Fix the side board so its children stays in position
 				if (tmpAnimChecker.getParent() != findViewById(R.id.board)) {
+					//Add a placeholder frame layout to stop the other checkers from jmping towards the middle.
 					FrameLayout placeholder = (FrameLayout) getLayoutInflater().inflate(R.layout.layout_placeholder, parent, false);
 					int index = parent.indexOfChild(tmpAnimChecker);
 					parent.addView(placeholder, index);		
 				}
-				//remove the ghost and make the real one visible
+
+				//Remove the ghost and make the real checker visible again.
 				parent.removeView(tmpAnimChecker);
 				tmpSelectedChecker.setVisibility(View.VISIBLE);
 			}
@@ -281,6 +296,7 @@ public class MainActivity extends Activity {
 	}
 
 	/**
+
 	 * Lets the player select a checker to remove or move
 	 * @param v The checker which was clicked on.
 	 */
@@ -290,13 +306,14 @@ public class MainActivity extends Activity {
 			//Is it a valid remove click?
 			if(rules.getTurn() == Constants.BLACK && rules.remove(checkerPositions.get(v), Constants.BLACK)) {
 				//Unamrk all options and remove the selected checker
+
 				unMarkAllFields();
 				blackCheckers.remove(v);
 				removeNextChecker = false;
 				ViewGroup parent = ((ViewGroup)v.getParent());
 				parent.removeView(v);
 				playerTurn.setText("Black turn");
-				
+
 				//Did someone win?
 				if (rules.isItAWin(Constants.BLACK)) {
 					isWin = true;
@@ -311,13 +328,14 @@ public class MainActivity extends Activity {
 				ViewGroup parent = ((ViewGroup)v.getParent());
 				parent.removeView(v);
 				playerTurn.setText("White turn");
-				
+
 				//Did someone win?
 				if (rules.isItAWin(Constants.WHITE)) {
 					isWin = true;
 					playerTurn.setText("Black wins!");
 				}
 			}
+
 		} 
 		//Try to select the checker for a move
 		else if (!(checkerPositions.get(v) != 0 && checkerPositions.containsValue(0)) || (checkerPositions.get(v) == 0)) {
@@ -326,6 +344,7 @@ public class MainActivity extends Activity {
 				selectedChecker.setAlpha(1.0f);
 			}
 			//If its the selected checker which is clicked, no checker is selected.
+
 			if(selectedChecker == v) {
 				hasSelectedChecker = false;
 				selectedChecker = null;
