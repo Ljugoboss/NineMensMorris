@@ -18,6 +18,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -31,10 +32,13 @@ public class MainActivity extends Activity {
 	private ArrayList<ImageView> arrayListWhiteCheckers;
 	private ArrayList<ImageView> arrayListBlackCheckers;
 	private ArrayList<FrameLayout> arrayListAreas;
-	private ImageView imageViewSelectedChecker;
-	private FrameLayout imageViewAreaToMoveTo;
+	private ImageView selectedChecker;
+	private FrameLayout areaToMoveTo;
 	private ImageView imageViewAreaToMoveFrom;
 	private HashMap<ImageView, Integer> checkerPositions;
+
+	private LinearLayout whiteCheckerArea;
+	private LinearLayout blackCheckerArea;
 
 	private boolean hasSelectedChecker = false;
 	private boolean removeNextChecker = false;
@@ -46,9 +50,11 @@ public class MainActivity extends Activity {
 		Log.i(TAG, "Creating activity");
 		setContentView(R.layout.activity_main);
 
-		imageViewSelectedChecker = null;
-		imageViewAreaToMoveTo = null;
+		selectedChecker = null;
+		areaToMoveTo = null;
 		imageViewAreaToMoveFrom = null;
+		whiteCheckerArea = (LinearLayout) findViewById(R.id.whiteCheckerArea);
+		blackCheckerArea = (LinearLayout) findViewById(R.id.blackCheckerArea);
 		checkerPositions = new HashMap<ImageView, Integer>();
 		playerTurn = (TextView) findViewById(R.id.TurnText);
 
@@ -134,33 +140,34 @@ public class MainActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 					if (hasSelectedChecker) {
-						imageViewAreaToMoveTo = (FrameLayout) v;
+						int currentTurn = rules.getTurn();
+						areaToMoveTo = (FrameLayout) v;
 
 						if (imageViewAreaToMoveFrom != null) {
-							imageViewSelectedChecker.setAlpha(1.0f);
+							selectedChecker.setAlpha(1.0f);
 						}
-						int to = Integer.parseInt((String) imageViewAreaToMoveTo.getContentDescription());
-						int from = checkerPositions.get(imageViewSelectedChecker);
+						int to = Integer.parseInt((String) areaToMoveTo.getContentDescription());
+						int from = checkerPositions.get(selectedChecker);
 						if (rules.validMove(from, to)) { // This line will change turn
 							unMarkAllFields();
-							moveChecker();
-							
-							checkerPositions.put((ImageView) imageViewSelectedChecker, Integer.parseInt((String) imageViewAreaToMoveTo.getContentDescription()));
+							moveChecker(currentTurn);
+
+							checkerPositions.put((ImageView) selectedChecker, Integer.parseInt((String) areaToMoveTo.getContentDescription()));
 
 							removeNextChecker = rules.canRemove(to);
 						}
 
-						imageViewSelectedChecker.setAlpha(1.0f);
+						selectedChecker.setAlpha(1.0f);
 						hasSelectedChecker = false;
-						imageViewSelectedChecker = null;
+						selectedChecker = null;
 						if (removeNextChecker) {
-							if (rules.getTurn() == Constants.WHITE) {
+							if (currentTurn == Constants.BLACK) {
 								playerTurn.setText("Remove White");
 							} else {
 								playerTurn.setText("Remove Black");
 							}
 						} else {
-							if (rules.getTurn() == Constants.WHITE) {
+							if (currentTurn == Constants.BLACK) {
 								playerTurn.setText("White turn");
 							} else {
 								playerTurn.setText("Black turn");
@@ -195,14 +202,36 @@ public class MainActivity extends Activity {
 	/**
 	 * Creates an animation that will move the checker from its current position to the new. Repositions the checker after animation is done.
 	 */
-	private void moveChecker() {
+	private void moveChecker(int turn) {
 		// Create two temporary final variables so that the onAnimationEnd method uses the right values
-		final ImageView tmpImageViewSelectedChecker = imageViewSelectedChecker;
-		final FrameLayout tmpImageViewAreaToMoveTo = imageViewAreaToMoveTo;
+		ImageView animChecker = selectedChecker;
 		final int[] locationChecker = {0, 0};
 		final int[] locationArea = {0, 0};
-		tmpImageViewSelectedChecker.getLocationOnScreen(locationChecker);
-		tmpImageViewAreaToMoveTo.getLocationOnScreen(locationArea);
+		selectedChecker.getLocationOnScreen(locationChecker);
+		areaToMoveTo.getLocationOnScreen(locationArea);
+		//Move to the other layout
+		if (selectedChecker.getParent() != findViewById(R.id.board)) {
+			ViewGroup parent = ((ViewGroup)selectedChecker.getParent());
+			//FrameLayout placeholder = (FrameLayout) getLayoutInflater().inflate(R.layout.layout_placeholder, parent, false);
+			int index = parent.indexOfChild(selectedChecker);
+			parent.removeView(selectedChecker);
+			//parent.addView(placeholder, index);
+			if(turn == Constants.WHITE) {
+				animChecker = (ImageView) getLayoutInflater().inflate(R.layout.anim_white_checker, parent, false);
+			} else {
+				animChecker = (ImageView) getLayoutInflater().inflate(R.layout.anim_black_checker, parent, false);
+			}
+			parent.addView(animChecker, index);
+			//Move the checker and make it invisible
+			((ViewGroup) findViewById(R.id.board)).addView(selectedChecker);
+			selectedChecker.setLayoutParams(areaToMoveTo.getLayoutParams());
+			selectedChecker.setVisibility(View.GONE);
+		}
+		final ImageView tmpAnimChecker = animChecker;
+		final ImageView tmpSelectedChecker = selectedChecker;
+		final FrameLayout tmpAreaToMoveTo = areaToMoveTo;
+		Log.i(TAG, "move from x: " + locationChecker[0] + " y: " + locationChecker[1]);
+		Log.i(TAG, "move to x: " + locationArea[0] + " y: " + locationArea[1]);
 
 		//Prepare animation with x and y movement
 		TranslateAnimation tAnimation = new TranslateAnimation(0, locationArea[0] - locationChecker[0], 0, locationArea[1] - locationChecker[1]);
@@ -213,9 +242,16 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				tmpImageViewSelectedChecker.setLayoutParams(tmpImageViewAreaToMoveTo.getLayoutParams());
-
-				tmpImageViewSelectedChecker.setDrawingCacheEnabled(true);
+				if (tmpAnimChecker.getParent() != findViewById(R.id.board)) {
+					ViewGroup parent = ((ViewGroup)tmpAnimChecker.getParent());
+					FrameLayout placeholder = (FrameLayout) getLayoutInflater().inflate(R.layout.layout_placeholder, parent, false);
+					int index = parent.indexOfChild(tmpAnimChecker);
+					parent.removeView(tmpAnimChecker);
+					parent.addView(placeholder, index);
+					tmpSelectedChecker.setVisibility(View.VISIBLE);
+				} else {
+					tmpAnimChecker.setLayoutParams(tmpAreaToMoveTo.getLayoutParams());
+				}
 			}
 
 			@Override
@@ -224,21 +260,10 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onAnimationStart(Animation animation) {
-				tmpImageViewSelectedChecker.setDrawingCacheEnabled(false);
 			}
 		});
-		//Move to the other layout
-		if (imageViewSelectedChecker.getParent() != findViewById(R.id.board)) {
-			ViewGroup parent = ((ViewGroup)imageViewSelectedChecker.getParent());
-			FrameLayout placeholder = (FrameLayout) getLayoutInflater().inflate(R.layout.layout_placeholder, parent, false);
-			int index = parent.indexOfChild(imageViewSelectedChecker);
-			parent.removeView(imageViewSelectedChecker);
-			parent.addView(placeholder, index);
-			((ViewGroup) findViewById(R.id.board)).addView(imageViewSelectedChecker);
 
-		}
-		
-		imageViewSelectedChecker.startAnimation(tAnimation);
+		animChecker.startAnimation(tAnimation);
 	}
 
 	/**
@@ -272,22 +297,22 @@ public class MainActivity extends Activity {
 			}
 		} else if (!(checkerPositions.get(v) != 0 && checkerPositions.containsValue(0)) || (checkerPositions.get(v) == 0)) {
 			// Select checker and mark it. Remove marking from other selected checker if there is one
-			if (imageViewSelectedChecker != null) {
-				imageViewSelectedChecker.setAlpha(1.0f);
+			if (selectedChecker != null) {
+				selectedChecker.setAlpha(1.0f);
 			}
-			if(imageViewSelectedChecker == v) {
+			if(selectedChecker == v) {
 				hasSelectedChecker = false;
-				imageViewSelectedChecker = null;
+				selectedChecker = null;
 				unMarkAllFields();
 				return;
 			}
 			markAvailableMoveFields(checkerPositions.get(v));
 			hasSelectedChecker = true;
-			imageViewSelectedChecker = (ImageView) v;
-			imageViewSelectedChecker.setAlpha(0.5f);
+			selectedChecker = (ImageView) v;
+			selectedChecker.setAlpha(0.5f);
 		}
 	}
-	
+
 	/**
 	 * Mark all avalible moves that can be done.
 	 * @param from
@@ -299,7 +324,7 @@ public class MainActivity extends Activity {
 			}
 		}
 	}
-	
+
 	/**
 	 * Unmark all fields.
 	 */
