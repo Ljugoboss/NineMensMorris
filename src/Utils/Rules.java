@@ -1,5 +1,7 @@
 package Utils;
 
+import android.content.SharedPreferences;
+
 /*
  * The game board positions
  *
@@ -14,21 +16,26 @@ package Utils;
  */
 
 public class Rules {
+	private static final String PLAYINGFIELD = "PLAYINGFIELD";
+	private static final String TURN = "TURN";
+	private static final String BLACK_MARKERS = "BLACK_MARKERS";
+	private static final String WHITE_MARKERS = "WHITE_MARKERS";
+
 	private int[] playingfield;
 	private int turn;
 	//Markers not on the playing field
 	private int blackMarkers;
 	private int whiteMarkers;
-	
+
 	private final int EMPTY_FIELD = 0;
-	
+
 	public Rules() {
 		playingfield = new int[25];
 		blackMarkers = 9;
 		whiteMarkers = 9;
 		turn = Constants.WHITE; //Random who will begin?
 	}
-	
+
 	/**
 	 * Try to move the checker.
 	 * @param from The position to move from.
@@ -36,7 +43,7 @@ public class Rules {
 	 * @return True if the move was successful, else false is returned.
 	 */
 	public boolean validMove(int from, int to) {
-		
+
 		// Put a marker from "hand" to the board
 		if(blackMarkers > 0 && turn == Constants.BLACK && playingfield[to] == EMPTY_FIELD) {
 			playingfield[to] = Constants.BLACK;
@@ -50,31 +57,31 @@ public class Rules {
 			turn = Constants.BLACK;
 			return true;
 		}
-		
+
 		//Not the right players turn
 		if(playingfield[from] != turn) {
 			return false;
 		}
-		
+
 		//Not a valid move
 		if(!isValidMove(from, to)) {
 			return false;
 		}
-		
+
 		// Move the marker to it's new position
 		playingfield[to] = playingfield[from];
 		playingfield[from] = EMPTY_FIELD;
-		
+
 		// Change turn
 		if(turn == Constants.WHITE) {
 			turn = Constants.BLACK;
 		} else {
 			turn = Constants.WHITE;
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Is it a valid move?
 	 * @param from The area the checker is at.
@@ -86,12 +93,12 @@ public class Rules {
 		if(playingfield[to] != EMPTY_FIELD)  {
 			return false;
 		}
-		
+
 		//If it is from the side board, all moves are valid.
 		if(from == 0) {
 			return true;
 		}
-		
+
 		//Can only move to it's neighbors.
 		switch (to) {
 		case 1:
@@ -145,7 +152,7 @@ public class Rules {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Check if the player is allowed to remove a checker from the other player. 
 	 * @param partOfLine The position of the checker.
@@ -156,7 +163,7 @@ public class Rules {
 		if(playingfield[partOfLine] == EMPTY_FIELD) {
 			return false;
 		}
-		
+
 		//All possible lines.
 		if((partOfLine == 1 || partOfLine == 2 || partOfLine == 3) && (playingfield[1] == playingfield[2] && playingfield[2] == playingfield[3])) {
 			return true;
@@ -208,7 +215,7 @@ public class Rules {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Remove a marker from the position if it matches the color
 	 * @param from The checker to be removed.
@@ -222,7 +229,7 @@ public class Rules {
 		} else
 			return false;
 	}
-	
+
 	/**
 	 * Check if color 'color' has lost
 	 * @param color The color which may have lost.
@@ -242,7 +249,7 @@ public class Rules {
 		}
 		return (count < 3);
 	}
-	
+
 	/**
 	 * 
 	 * @param field The field to be checked.
@@ -251,12 +258,35 @@ public class Rules {
 	public int fieldColor(int field) {
 		return playingfield[field];
 	}
-	
+
 	/**
 	 * 
 	 * @return The player whos turn it is.
 	 */
 	public int getTurn() {
 		return turn;
+	}
+
+	public void saveData(SharedPreferences.Editor editor) {
+		for (int i=0; i<playingfield.length; i++) {
+			editor.putInt(PLAYINGFIELD + i, playingfield[i]);
+		}
+		editor.putInt(WHITE_MARKERS, whiteMarkers);
+		editor.putInt(BLACK_MARKERS, blackMarkers);
+		editor.putInt(TURN, turn);
+		editor.commit();
+	}
+
+	public void restoreData(SharedPreferences sp) {
+		for (int i=0; i<playingfield.length; i++) {
+			playingfield[i] = sp.getInt(PLAYINGFIELD + i, EMPTY_FIELD);
+		}
+		whiteMarkers = sp.getInt(WHITE_MARKERS, 9);
+		blackMarkers = sp.getInt(BLACK_MARKERS, 9);
+		turn = sp.getInt(TURN, Constants.WHITE);
+	}
+	
+	public int[] getPlayingfield() {
+		return playingfield;
 	}
 }

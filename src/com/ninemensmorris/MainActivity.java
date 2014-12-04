@@ -6,6 +6,8 @@ import java.util.HashMap;
 import Utils.Constants;
 import Utils.Rules;
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -25,6 +27,8 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 	private final String TAG = "Main activity";
 
+	private final String NEW_GAME = "NEW_GAME";
+
 	Rules rules = new Rules();
 
 	private TextView playerTurn;
@@ -34,16 +38,22 @@ public class MainActivity extends Activity {
 	private ImageView selectedChecker;
 	private FrameLayout areaToMoveTo;
 	private HashMap<ImageView, Integer> checkerPositions;
+	private SharedPreferences sharedPreferences;
+	private SharedPreferences.Editor editor;
 
 	private boolean hasSelectedChecker = false;
 	private boolean removeNextChecker = false;
 	private boolean isWin = false;
+	private boolean newGame = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.i(TAG, "Creating activity");
 		setContentView(R.layout.activity_main);
+
+		sharedPreferences = this.getSharedPreferences("com.ninemensmorris", Context.MODE_PRIVATE);
+		editor = sharedPreferences.edit();
 
 		selectedChecker = null;
 		areaToMoveTo = null;
@@ -114,7 +124,7 @@ public class MainActivity extends Activity {
 				}
 			});
 		}
-		
+
 		//Add a onClickListener to the black checkers
 		for (ImageView v : blackCheckers) {
 			checkerPositions.put(v, 0);
@@ -144,12 +154,12 @@ public class MainActivity extends Activity {
 						int from = checkerPositions.get(selectedChecker);
 						//Try to move the checker
 						if (rules.validMove(from, to)) {
-							
+
 							//Update the UI
 							unMarkAllFields();
 							moveChecker(currentTurn);
 							selectedChecker.setAlpha(1.0f);
-							
+
 							//The selected checker is not selected anymore
 							hasSelectedChecker = false;
 							selectedChecker = null;
@@ -157,7 +167,7 @@ public class MainActivity extends Activity {
 
 							//Did the move create a row of 3?
 							removeNextChecker = rules.canRemove(to);
-							
+
 							//Update the turn text
 							if (removeNextChecker) {
 								if (currentTurn == Constants.BLACK) {
@@ -192,20 +202,112 @@ public class MainActivity extends Activity {
 		switch (item.getItemId()) {
 		case R.id.item1:
 			//Start a new game
+			editor.putBoolean(NEW_GAME, newGame);
+			editor.commit();
 			finish();
 			startActivity(getIntent());
 			return true;           
 		default:
 			return super.onOptionsItemSelected(item);
 		} 
-	} 
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		rules.saveData(editor);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		newGame = sharedPreferences.getBoolean(NEW_GAME, false);
+		if (!newGame) {
+			rules.restoreData(sharedPreferences);
+			if (rules.getTurn() == Constants.WHITE) {
+				playerTurn.setText("White turn");
+			} else {
+				playerTurn.setText("Black turn");
+			}
+		} else {
+			rules = new Rules();
+		}
+
+
+		int [] tmpPlayingfield = rules.getPlayingfield();
+		checkerPositions = new HashMap<ImageView, Integer>();
+		for (ImageView v : whiteCheckers) {
+			int i = 0;
+			checkerPositions.put(v, 0);
+			while (i<tmpPlayingfield.length) {
+				if (rules.fieldColor(i) == Constants.WHITE) {
+					checkerPositions.put(v, i);
+					tmpPlayingfield[i] = 0;
+					break;
+				}
+				i++;
+			}
+		}
+
+		for (ImageView v : blackCheckers) {
+			int i = 0;
+			checkerPositions.put(v, 0);
+			while (i<tmpPlayingfield.length) {
+				if (rules.fieldColor(i) == Constants.BLACK) {
+					checkerPositions.put(v, i);
+					tmpPlayingfield[i] = 0;
+					break;
+				}
+				i++;
+			}
+		}
+
+		ViewGroup parent;
+		for (int i=0; i<tmpPlayingfield.length; i++) {
+			int area = tmpPlayingfield[i];
+			if (area == Constants.WHITE) {
+				selectedChecker = whiteCheckers.get(i);
+				parent = ((ViewGroup)selectedChecker.getParent());
+
+				higBoxAreas.get(area).addView(selectedChecker);
+
+				if (parent != findViewById(R.id.board)) {
+
+					//Remove the read checker and add the ghost where the real one was.
+					int index = parent.indexOfChild(selectedChecker);
+					parent.removeView(selectedChecker);
+					//Move the real one to the board
+					((ViewGroup) findViewById(R.id.board)).addView(selectedChecker);
+
+				}				
+				selectedChecker.setLayoutParams(higBoxAreas.get(area).getLayoutParams());
+
+			} else if (area == Constants.BLACK) {
+				selectedChecker = blackCheckers.get(i);
+				parent = ((ViewGroup)selectedChecker.getParent());
+
+				higBoxAreas.get(area).addView(selectedChecker);
+
+				if (parent != findViewById(R.id.board)) {
+
+					//Remove the read checker and add the ghost where the real one was.
+					int index = parent.indexOfChild(selectedChecker);
+					parent.removeView(selectedChecker);
+					//Move the real one to the board
+					((ViewGroup) findViewById(R.id.board)).addView(selectedChecker);
+
+				}				
+				selectedChecker.setLayoutParams(higBoxAreas.get(area).getLayoutParams());
+			}
+		}
+	}
 
 	/**
 	 * Move the checker from the current position to a new position.
 	 * @param turn Constants.WHITE or Constants.BLACK according to whos turn it is
 	 */
 	private void moveChecker(int turn) {
-		
+
 		ImageView animChecker = null;
 		//Get the position of the checker that will move and the area it will move to.
 		final int[] locationChecker = {0, 0};
@@ -226,14 +328,14 @@ public class MainActivity extends Activity {
 
 		//If the checker is in the side board, we need to update the sideboard as well
 		if (parent != findViewById(R.id.board)) {
-			
+
 			//Remove the read checker and add the ghost where the real one was.
 			int index = parent.indexOfChild(selectedChecker);
 			parent.removeView(selectedChecker);
 			parent.addView(animChecker, index);
 			//Move the real one to the board
 			((ViewGroup) findViewById(R.id.board)).addView(selectedChecker);
-			
+
 		} else {
 			//Add the ghost checker at the real checkers position
 			parent.addView(animChecker);
@@ -298,7 +400,7 @@ public class MainActivity extends Activity {
 				ViewGroup parent = ((ViewGroup)v.getParent());
 				parent.removeView(v);
 				playerTurn.setText("Black turn");
-				
+
 				//Did someone win?
 				if (rules.isItAWin(Constants.BLACK)) {
 					playerTurn.setText("White wins!");
@@ -312,7 +414,7 @@ public class MainActivity extends Activity {
 				ViewGroup parent = ((ViewGroup)v.getParent());
 				parent.removeView(v);
 				playerTurn.setText("White turn");
-				
+
 				//Did someone win?
 				if (rules.isItAWin(Constants.WHITE)) {
 					playerTurn.setText("Black wins!");
