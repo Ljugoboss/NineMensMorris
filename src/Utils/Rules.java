@@ -29,26 +29,34 @@ public class Rules {
 		turn = Constants.WHITE; //Random who will begin?
 	}
 	
+	/**
+	 * Try to move the checker.
+	 * @param from The position to move from.
+	 * @param to The position to move to.
+	 * @return True if the move was successful, else false is returned.
+	 */
 	public boolean validMove(int from, int to) {
 		
 		// Put a marker from "hand" to the board
-		if(turn == Constants.BLACK && blackMarkers > 0) {
+		if(blackMarkers > 0 && turn == Constants.BLACK && playingfield[to] == EMPTY_FIELD) {
 			playingfield[to] = Constants.BLACK;
 			blackMarkers--;
 			turn = Constants.WHITE;
 			return true;
 		}
-		if(turn == Constants.WHITE && whiteMarkers > 0) {
+		if(whiteMarkers > 0 && turn == Constants.WHITE  && playingfield[to] == EMPTY_FIELD) {
 			playingfield[to] = Constants.WHITE;
 			whiteMarkers--;
 			turn = Constants.BLACK;
 			return true;
 		}
 		
+		//Not the right players turn
 		if(playingfield[from] != turn) {
 			return false;
 		}
 		
+		//Not a valid move
 		if(!isValidMove(from, to)) {
 			return false;
 		}
@@ -67,15 +75,24 @@ public class Rules {
 		return true;
 	}
 	
+	/**
+	 * Is it a valid move?
+	 * @param from The area the checker is at.
+	 * @param to The area the checker wants to go.
+	 * @return True if it's a valid move, else false is returned.
+	 */
 	public boolean isValidMove(int from, int to) {
+		//The "to"-field needs to be empty
 		if(playingfield[to] != EMPTY_FIELD)  {
 			return false;
 		}
 		
+		//If it is from the side board, all moves are valid.
 		if(from == 0) {
 			return true;
 		}
 		
+		//Can only move to it's neighbors.
 		switch (to) {
 		case 1:
 			return (from == 10 || from == 2);
@@ -129,12 +146,18 @@ public class Rules {
 		return false;
 	}
 	
+	/**
+	 * Check if the player is allowed to remove a checker from the other player. 
+	 * @param partOfLine The position of the checker.
+	 * @return True if the checker is part of a line, else return false.
+	 */
 	public boolean canRemove(int partOfLine) {
 		// Check if the argument is part of a line on the board
 		if(playingfield[partOfLine] == EMPTY_FIELD) {
 			return false;
 		}
 		
+		//All possible lines.
 		if((partOfLine == 1 || partOfLine == 2 || partOfLine == 3) && (playingfield[1] == playingfield[2] && playingfield[2] == playingfield[3])) {
 			return true;
 		}
@@ -188,9 +211,9 @@ public class Rules {
 	
 	/**
 	 * Remove a marker from the position if it matches the color
-	 * @param from
-	 * @param color
-	 * @return
+	 * @param from The checker to be removed.
+	 * @param color The color the checker should be if the remove is valid. 
+	 * @return True if the removal was successful, else false is returned.
 	 */
 	public boolean remove(int from, int color) {
 		if (playingfield[from] == color) {
@@ -201,14 +224,16 @@ public class Rules {
 	}
 	
 	/**
-	 * Check if color 'color' has won
-	 * @param color 
-	 * @return
+	 * Check if color 'color' has lost
+	 * @param color The color which may have lost.
+	 * @return True if color has lost, else false is returned.
 	 */
 	public boolean isItAWin(int color) {
+		//A player can't win if it is checker left on the sideboard.
 		if(whiteMarkers > 0 || blackMarkers > 0) {
 			return false;
 		}
+		//Does the color have less then 3 checkers left?
 		int count = 0;
 		for(int i : playingfield) {
 			if(i == color) {
@@ -218,10 +243,19 @@ public class Rules {
 		return (count < 3);
 	}
 	
+	/**
+	 * 
+	 * @param field The field to be checked.
+	 * @return The color the checker on a field is.
+	 */
 	public int fieldColor(int field) {
 		return playingfield[field];
 	}
 	
+	/**
+	 * 
+	 * @return The player whos turn it is.
+	 */
 	public int getTurn() {
 		return turn;
 	}
