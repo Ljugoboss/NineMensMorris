@@ -299,6 +299,7 @@ public class MainActivity extends Activity {
 				
 				//Did someone win?
 				if (rules.isItAWin(Constants.BLACK)) {
+					isWin = true;
 					playerTurn.setText("White wins!");
 				}
 			} 
@@ -313,6 +314,7 @@ public class MainActivity extends Activity {
 				
 				//Did someone win?
 				if (rules.isItAWin(Constants.WHITE)) {
+					isWin = true;
 					playerTurn.setText("Black wins!");
 				}
 			}
