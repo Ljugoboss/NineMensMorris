@@ -239,30 +239,34 @@ public class MainActivity extends Activity {
 		for (int i=0; i<tmpPlayingfield.length; i++) {
 			tmpPlayingfield[i] = rules.getPlayingfieldField(i);
 		}
+		
 		checkerPositions = new HashMap<ImageView, Integer>();
-		for (ImageView v : whiteCheckers) {
-			int i = 1;
+		ImageView v;
+		for (int i=0; i<whiteCheckers.size(); i++) {
+			v = whiteCheckers.get(i);
+			int j = 1;
 			checkerPositions.put(v, 0);
-			while (i<tmpPlayingfield.length) {
-				if (rules.fieldColor(i) == Constants.WHITE) {
-					checkerPositions.put(v, i);
-					tmpPlayingfield[i] = 0;
+			while (j<tmpPlayingfield.length) {
+				if (rules.fieldColor(j) == Constants.WHITE) {
+					checkerPositions.put(v, j);
+					tmpPlayingfield[j] = 0;
 					break;
 				}
-				i++;
+				j++;
 			}
 		}
 
-		for (ImageView v : blackCheckers) {
-			int i = 1;
+		for (int i=0; i<whiteCheckers.size(); i++) {
+			v = blackCheckers.get(i);
+			int j = 1;
 			checkerPositions.put(v, 0);
-			while (i<tmpPlayingfield.length) {
-				if (rules.fieldColor(i) == Constants.BLACK) {
-					checkerPositions.put(v, i);
-					tmpPlayingfield[i] = 0;
+			while (j<tmpPlayingfield.length) {
+				if (rules.fieldColor(j) == Constants.BLACK) {
+					checkerPositions.put(v, j);
+					tmpPlayingfield[j] = 0;
 					break;
 				}
-				i++;
+				j++;
 			}
 		}
 
@@ -283,14 +287,14 @@ public class MainActivity extends Activity {
 				if (parent != findViewById(R.id.board)) {
 
 					//Remove the read checker and add the ghost where the real one was.
+					int index = parent.indexOfChild(selectedChecker);
 					parent.removeView(selectedChecker);
 					//Move the real one to the board
 					((ViewGroup) findViewById(R.id.board)).addView(selectedChecker);
 //					higBoxAreas.get(area).addView(selectedChecker);
+					
+					selectedChecker.setLayoutParams(higBoxAreas.get(i-1).getLayoutParams());
 				}
-				
-				selectedChecker.setLayoutParams(higBoxAreas.get(i-1).getLayoutParams());
-
 			} else if (area == Constants.BLACK) {
 				selectedChecker = blackCheckers.get(k);
 				k++;
@@ -304,9 +308,9 @@ public class MainActivity extends Activity {
 					//Move the real one to the board
 					((ViewGroup) findViewById(R.id.board)).addView(selectedChecker);
 //					higBoxAreas.get(area).addView(selectedChecker);
+					
+					selectedChecker.setLayoutParams(higBoxAreas.get(i-1).getLayoutParams());
 				}	
-				
-				selectedChecker.setLayoutParams(higBoxAreas.get(i-1).getLayoutParams());
 			}
 		}
 	}
@@ -432,6 +436,8 @@ public class MainActivity extends Activity {
 		}
 		//Try to select the checker for a move.
 		else if (!(checkerPositions.get(v) != 0 && checkerPositions.containsValue(0)) || (checkerPositions.get(v) == 0)) {
+			
+			int bla = checkerPositions.get(v);
 			//If a checker already was selected, unselect it.
 			if (selectedChecker != null) {
 				selectedChecker.setAlpha(1.0f);
