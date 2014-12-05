@@ -6,6 +6,8 @@ import java.util.HashMap;
 import Utils.Constants;
 import Utils.Rules;
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -25,6 +27,13 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 	private final String TAG = "Main activity";
 
+	private final String WHITE_INDEXES = "WHITE_INDEXES";
+	private final String BLACK_INDEXES = "BLACK_INDEXES";
+	private final String WHITE_INDEXES_SIZE = "WHITE_INDEXES_SIZE";
+	private final String BLACK_INDEXES_SIZE = "BLACK_INDEXES_SIZE";
+	private final String REMOVE_CHECKER = "REMOVE_CHECKER";
+	private final String IS_WIN = "IS_WIN";
+
 	Rules rules = new Rules();
 
 	private TextView playerTurn;
@@ -39,11 +48,20 @@ public class MainActivity extends Activity {
 	private boolean removeNextChecker = false;
 	private boolean isWin = false;
 
+	private SharedPreferences pref;
+	private SharedPreferences.Editor edit;
+
+	private ArrayList<String> whiteIndexes = new ArrayList<String>();
+	private ArrayList<String> blackIndexes = new ArrayList<String>();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.i(TAG, "Creating activity");
 		setContentView(R.layout.activity_main);
+
+		pref = this.getSharedPreferences("com.ninemensmorris", Context.MODE_PRIVATE);
+		edit = pref.edit();
 
 		selectedChecker = null;
 		areaToMoveTo = null;
@@ -135,8 +153,10 @@ public class MainActivity extends Activity {
 
 				@Override
 				public void onClick(View v) {
+					
 					//If we have a selected checker, try to move it
 					if (hasSelectedChecker) {
+						Log.i(TAG, "Area clicked");
 						int currentTurn = rules.getTurn();
 						areaToMoveTo = (FrameLayout) v;
 
@@ -145,6 +165,7 @@ public class MainActivity extends Activity {
 						int from = checkerPositions.get(selectedChecker);
 						//Try to move the checker
 						if (rules.validMove(from, to)) { // This line will change turn
+							Log.i(TAG, "VAlid move");
 							//Update the UI
 							unMarkAllFields();
 							moveChecker(currentTurn);
@@ -195,6 +216,128 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+		Log.i(TAG, "Saving instace");
+		savedInstanceState = rules.saveState(savedInstanceState);
+		savedInstanceState.putStringArrayList(WHITE_INDEXES, whiteIndexes);
+		savedInstanceState.putStringArrayList(BLACK_INDEXES, blackIndexes);
+		savedInstanceState.putBoolean(IS_WIN, isWin);
+		savedInstanceState.putBoolean(REMOVE_CHECKER, removeNextChecker);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		Log.i(TAG, "---------------------pause----------------");
+		rules.savePref(edit);
+		edit.putInt(WHITE_INDEXES_SIZE, whiteIndexes.size());
+		edit.putInt(BLACK_INDEXES_SIZE, blackIndexes.size());
+
+		for(int i = 0; i < whiteIndexes.size(); i++) {
+			edit.putString(WHITE_INDEXES+i, whiteIndexes.get(i));
+		}
+		for(int i = 0; i < blackIndexes.size(); i++) {
+			edit.putString(BLACK_INDEXES+i, blackIndexes.get(i));
+		}
+		edit.putBoolean(IS_WIN, isWin);
+		edit.putBoolean(REMOVE_CHECKER, removeNextChecker);
+		edit.commit();
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		Log.i(TAG, "---------------------resume----------------");
+		rules.restorePref(pref);
+		int whiteSize = pref.getInt(WHITE_INDEXES_SIZE, 0);
+		int blackSize = pref.getInt(BLACK_INDEXES_SIZE, 0);
+		for(int i = 0; i < whiteSize; i++) {
+			whiteIndexes.add(pref.getString(WHITE_INDEXES+i, ""));
+		}
+		for(int i = 0; i < blackSize; i++) {
+			blackIndexes.add(pref.getString(BLACK_INDEXES+i, ""));
+		}
+
+		isWin = pref.getBoolean(IS_WIN, false);
+		removeNextChecker = pref.getBoolean(REMOVE_CHECKER, false);
+		restore();
+	}
+	
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		Log.i(TAG, "Restoring instance");
+		rules.restoreState(savedInstanceState);
+		whiteIndexes = savedInstanceState.getStringArrayList(WHITE_INDEXES);
+		blackIndexes = savedInstanceState.getStringArrayList(BLACK_INDEXES);
+		isWin = savedInstanceState.getBoolean(IS_WIN);
+		removeNextChecker = savedInstanceState.getBoolean(REMOVE_CHECKER);
+		restore();
+	}
+
+	private void restore() {
+		int white = 0;
+		int black = 0;
+		for(int i = 1; i < 25; i ++) {
+			int color = rules.fieldColor(i);
+			int index = 0;
+			ViewGroup parent = null;
+			if(color == Constants.WHITE) {
+				index = Integer.parseInt(whiteIndexes.get(white));
+				white++;
+				parent = ((ViewGroup)findViewById(R.id.whiteCheckerArea));
+			} else if(color == Constants.BLACK) {
+				index = Integer.parseInt(blackIndexes.get(black));
+				black++;
+				parent = ((ViewGroup)findViewById(R.id.blackCheckerArea));
+			}
+			if(parent != null) {
+				ImageView checker = setPlaceHolder(index, parent);
+				((ViewGroup) findViewById(R.id.board)).addView(checker);
+				int areaId = getResources().getIdentifier("area" + i, "id", this.getPackageName());
+				checker.setLayoutParams(findViewById(areaId).getLayoutParams());
+				checkerPositions.put(checker, i);
+			}
+			if (removeNextChecker) {
+				if (rules.getTurn() == Constants.WHITE) {
+					playerTurn.setText("Remove White");
+				} else {
+					playerTurn.setText("Remove Black");
+				}
+			} else {
+				if (rules.getTurn() == Constants.WHITE) {
+					playerTurn.setText("White turn");
+				} else {
+					playerTurn.setText("Black turn");
+				}
+			}
+			if(isWin) {
+				if (rules.getTurn() == Constants.BLACK) {
+					playerTurn.setText("White wins!");
+				} else {
+					playerTurn.setText("Black wins!");
+				}
+			}
+		}
+		while(white < whiteIndexes.size()) {
+			setPlaceHolder(Integer.parseInt(whiteIndexes.get(white)), ((ViewGroup)findViewById(R.id.whiteCheckerArea)));
+			white++;
+		}
+		while(black < blackIndexes.size()) {
+			setPlaceHolder(Integer.parseInt(blackIndexes.get(black)), ((ViewGroup)findViewById(R.id.blackCheckerArea)));
+			black++;
+		}
+	}
+
+	private ImageView setPlaceHolder(int index, ViewGroup parent) {
+		ImageView checker = (ImageView)parent.getChildAt(index);
+		parent.removeViewAt(index);
+		FrameLayout placeholder = (FrameLayout) getLayoutInflater().inflate(R.layout.layout_placeholder, parent, false);
+		parent.addView(placeholder, index);
+		return checker;
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -233,12 +376,14 @@ public class MainActivity extends Activity {
 		Log.i(TAG, "move to x: " + locationArea[0] + " y: " + locationArea[1]);
 
 		ViewGroup parent = ((ViewGroup)selectedChecker.getParent());
-
+		final int index = parent.indexOfChild(selectedChecker);
 
 		//Create a ghost checker which will be animated while the real one just moves.
 		if(turn == Constants.WHITE) {
+			whiteIndexes.add(index + "");
 			animChecker = (ImageView) getLayoutInflater().inflate(R.layout.anim_white_checker, parent, false);
 		} else {
+			blackIndexes.add(index + "");
 			animChecker = (ImageView) getLayoutInflater().inflate(R.layout.anim_black_checker, parent, false);
 		}
 
@@ -246,7 +391,6 @@ public class MainActivity extends Activity {
 		//If the checker is in the side board, we need to update the side board as well
 		if (parent != findViewById(R.id.board)) {
 			//Remove the real checker and add the ghost where the real one was
-			int index = parent.indexOfChild(selectedChecker);
 			parent.removeView(selectedChecker);
 			parent.addView(animChecker, index);
 			//Move the real one to the side board
@@ -284,7 +428,6 @@ public class MainActivity extends Activity {
 				if (tmpAnimChecker.getParent() != findViewById(R.id.board)) {
 					//Add a placeholder frame layout to stop the other checkers from jmping towards the middle.
 					FrameLayout placeholder = (FrameLayout) getLayoutInflater().inflate(R.layout.layout_placeholder, parent, false);
-					int index = parent.indexOfChild(tmpAnimChecker);
 					parent.addView(placeholder, index);		
 				}
 

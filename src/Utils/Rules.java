@@ -1,7 +1,7 @@
 package Utils;
 
-import com.ninemensmorris.R;
-
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 
 /*
@@ -19,6 +19,11 @@ import android.util.Log;
 
 public class Rules {
 	private final String TAG = "Rules";
+	private final String PLAYINGFIELD = "PLAYINGFIELD";
+	private final String TURN = "TURN";
+	private final String WHITE_MARKERS = "WHITE_MARKERS";
+	private final String BLACK_MARKERS = "BLACK_MARKERS";
+	
 	private int[] playingfield;
 	private int turn;
 	//Markers not on the playing field
@@ -41,6 +46,9 @@ public class Rules {
 	 * @return True if the move was successful, else false is returned.
 	 */
 	public boolean validMove(int from, int to) {
+		Log.i(TAG, "Trying to move : " + from + " - " + to);
+		Log.i(TAG, "White markers in sideboard: " + whiteMarkers);
+		Log.i(TAG, "Black markers in sideboard: " + blackMarkers);
 
 		// Put a marker from "hand" to the board
 		if(blackMarkers > 0 && turn == Constants.BLACK && playingfield[to] == EMPTY_FIELD) {
@@ -243,12 +251,12 @@ public class Rules {
 		if(whiteMarkers > 0 || blackMarkers > 0) {
 			return false;
 		}
-		
+
 		//color lost if there is no valid moves
 		if(!hasValidMoves(color)) {
 			return true;
 		}
-		
+
 		//Does the color have less then 3 checkers left?
 		int count = 0;
 		for(int i : playingfield) {
@@ -305,5 +313,45 @@ public class Rules {
 	 */
 	public int getTurn() {
 		return turn;
+	}
+
+	public Bundle saveState(Bundle instance) {
+		instance.putIntArray(PLAYINGFIELD, playingfield);
+		instance.putInt(TURN, turn);
+		instance.putInt(WHITE_MARKERS, whiteMarkers);
+		instance.putInt(BLACK_MARKERS, blackMarkers);
+		return instance;
+	}
+	
+	public void restoreState(Bundle instance) {
+		playingfield = instance.getIntArray(PLAYINGFIELD);
+		turn = instance.getInt(TURN);
+		whiteMarkers = instance.getInt(WHITE_MARKERS);
+		blackMarkers = instance.getInt(BLACK_MARKERS);
+	}
+	
+	public void savePref(SharedPreferences.Editor instance) {
+		for(int i = 0; i < playingfield.length; i++) {
+			instance.putInt(PLAYINGFIELD+i, playingfield[i]);
+		}
+		
+		instance.putInt(TURN, turn);
+		instance.putInt(WHITE_MARKERS, whiteMarkers);
+		instance.putInt(BLACK_MARKERS, blackMarkers);
+		instance.commit();
+	}
+	
+	public void restorePref(SharedPreferences instance) {
+		for(int i = 0; i < playingfield.length; i++) {
+			playingfield[i] = instance.getInt(PLAYINGFIELD+i, EMPTY_FIELD);
+			Log.i(TAG, "Field " + i + " " + playingfield[i]);
+		}
+		
+
+		turn = instance.getInt(TURN, Constants.WHITE);
+		whiteMarkers = instance.getInt(WHITE_MARKERS, 9);
+		blackMarkers = instance.getInt(BLACK_MARKERS, 9);
+		Log.i(TAG, whiteMarkers + "");
+		Log.i(TAG, blackMarkers + "");
 	}
 }
