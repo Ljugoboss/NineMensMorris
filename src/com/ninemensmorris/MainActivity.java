@@ -241,7 +241,8 @@ public class MainActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 		Log.i(TAG, "---------------------resume----------------");
-		newGame = pref.getBoolean(NEW_GAME, true);
+		newGame = pref.getBoolean(NEW_GAME, false);
+		edit.putBoolean(NEW_GAME, false);
 		if(!newGame) {
 			rules.restorePref(pref);
 			int whiteSize = pref.getInt(WHITE_INDEXES_SIZE, 0);
