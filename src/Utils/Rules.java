@@ -315,21 +315,6 @@ public class Rules {
 		return turn;
 	}
 
-	public Bundle saveState(Bundle instance) {
-		instance.putIntArray(PLAYINGFIELD, playingfield);
-		instance.putInt(TURN, turn);
-		instance.putInt(WHITE_MARKERS, whiteMarkers);
-		instance.putInt(BLACK_MARKERS, blackMarkers);
-		return instance;
-	}
-	
-	public void restoreState(Bundle instance) {
-		playingfield = instance.getIntArray(PLAYINGFIELD);
-		turn = instance.getInt(TURN);
-		whiteMarkers = instance.getInt(WHITE_MARKERS);
-		blackMarkers = instance.getInt(BLACK_MARKERS);
-	}
-	
 	public void savePref(SharedPreferences.Editor instance) {
 		for(int i = 0; i < playingfield.length; i++) {
 			instance.putInt(PLAYINGFIELD+i, playingfield[i]);

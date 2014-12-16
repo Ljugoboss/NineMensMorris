@@ -33,6 +33,7 @@ public class MainActivity extends Activity {
 	private final String BLACK_INDEXES_SIZE = "BLACK_INDEXES_SIZE";
 	private final String REMOVE_CHECKER = "REMOVE_CHECKER";
 	private final String IS_WIN = "IS_WIN";
+	private final String NEW_GAME = "NEW_GAME";
 
 	Rules rules = new Rules();
 
@@ -47,6 +48,7 @@ public class MainActivity extends Activity {
 	private boolean hasSelectedChecker = false;
 	private boolean removeNextChecker = false;
 	private boolean isWin = false;
+	private boolean newGame = true;
 
 	private SharedPreferences pref;
 	private SharedPreferences.Editor edit;
@@ -153,7 +155,7 @@ public class MainActivity extends Activity {
 
 				@Override
 				public void onClick(View v) {
-					
+
 					//If we have a selected checker, try to move it
 					if (hasSelectedChecker) {
 						Log.i(TAG, "Area clicked");
@@ -217,17 +219,6 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle savedInstanceState) {
-		super.onSaveInstanceState(savedInstanceState);
-		Log.i(TAG, "Saving instace");
-		savedInstanceState = rules.saveState(savedInstanceState);
-		savedInstanceState.putStringArrayList(WHITE_INDEXES, whiteIndexes);
-		savedInstanceState.putStringArrayList(BLACK_INDEXES, blackIndexes);
-		savedInstanceState.putBoolean(IS_WIN, isWin);
-		savedInstanceState.putBoolean(REMOVE_CHECKER, removeNextChecker);
-	}
-
-	@Override
 	public void onPause() {
 		super.onPause();
 		Log.i(TAG, "---------------------pause----------------");
@@ -245,36 +236,27 @@ public class MainActivity extends Activity {
 		edit.putBoolean(REMOVE_CHECKER, removeNextChecker);
 		edit.commit();
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
 		Log.i(TAG, "---------------------resume----------------");
-		rules.restorePref(pref);
-		int whiteSize = pref.getInt(WHITE_INDEXES_SIZE, 0);
-		int blackSize = pref.getInt(BLACK_INDEXES_SIZE, 0);
-		for(int i = 0; i < whiteSize; i++) {
-			whiteIndexes.add(pref.getString(WHITE_INDEXES+i, ""));
-		}
-		for(int i = 0; i < blackSize; i++) {
-			blackIndexes.add(pref.getString(BLACK_INDEXES+i, ""));
-		}
+		newGame = pref.getBoolean(NEW_GAME, true);
+		if(!newGame) {
+			rules.restorePref(pref);
+			int whiteSize = pref.getInt(WHITE_INDEXES_SIZE, 0);
+			int blackSize = pref.getInt(BLACK_INDEXES_SIZE, 0);
+			for(int i = 0; i < whiteSize; i++) {
+				whiteIndexes.add(pref.getString(WHITE_INDEXES+i, ""));
+			}
+			for(int i = 0; i < blackSize; i++) {
+				blackIndexes.add(pref.getString(BLACK_INDEXES+i, ""));
+			}
 
-		isWin = pref.getBoolean(IS_WIN, false);
-		removeNextChecker = pref.getBoolean(REMOVE_CHECKER, false);
-		restore();
-	}
-	
-	@Override
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		Log.i(TAG, "Restoring instance");
-		rules.restoreState(savedInstanceState);
-		whiteIndexes = savedInstanceState.getStringArrayList(WHITE_INDEXES);
-		blackIndexes = savedInstanceState.getStringArrayList(BLACK_INDEXES);
-		isWin = savedInstanceState.getBoolean(IS_WIN);
-		removeNextChecker = savedInstanceState.getBoolean(REMOVE_CHECKER);
-		restore();
+			isWin = pref.getBoolean(IS_WIN, false);
+			removeNextChecker = pref.getBoolean(REMOVE_CHECKER, false);
+			restore();
+		}
 	}
 
 	private void restore() {
@@ -354,6 +336,7 @@ public class MainActivity extends Activity {
 			//Start a new game
 			finish();
 			startActivity(getIntent());
+			edit.putBoolean(NEW_GAME, true);
 			return true;           
 		default:
 			return super.onOptionsItemSelected(item);
@@ -454,7 +437,7 @@ public class MainActivity extends Activity {
 	 * @param v The checker which was clicked on.
 	 */
 	private void selectChecker(View v) {
-		//Is it a reamove click=
+		//Is it a remove click=
 		if (removeNextChecker) {
 			//Is it a valid remove click?
 			if(rules.getTurn() == Constants.BLACK && rules.remove(checkerPositions.get(v), Constants.BLACK)) {
